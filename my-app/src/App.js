@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path="*" element={<ErrorPage />} />
         <Route path="/" element={<MainPage  />} />
-        <Route path="login" element={<ValidationSchemaExample/>} />
+        <Route path="/login" element={<ValidationSchemaExample/>} />
         <Route path="one" element={<PageOne />} />
         <Route path="two" element={<PageTwo />} />
       </Routes>
