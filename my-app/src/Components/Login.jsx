@@ -9,7 +9,7 @@ const SignupSchema = Yup.object().shape({
     .min(2, 'Минимум 2 буквы')
     .max(50, 'Максимум 50 букв')
     .required('Обязательное поле'),
-  password:Yup.string()
+  pass:Yup.string()
   /*.min(8, 'Password must be 8 characters long')
   .matches(/[0-9]/, 'Password requires a number')
   .matches(/[a-z]/, 'Password requires a lowercase letter')
@@ -34,14 +34,14 @@ export const ValidationSchemaExample = () => (
     <Formik
       initialValues={{
         nickName: '',
-        password: '',
+        pass: '',
       }}
       
       validationSchema={SignupSchema}
       onSubmit={ (values) => {
         console.log(values);
-         const {nickName,password} = values
-         const userData = { username: nickName, password: password};
+         const {nickName,pass} = values
+         const userData = { username: nickName, password: pass};
         sendRequest(userData )
         
       }}
@@ -52,9 +52,9 @@ export const ValidationSchemaExample = () => (
           {errors.nickName && touched.nickName ? (
             <div>{errors.nickName}</div>
           ) : null}
-          <Field placeholder = 'Ваш пароль'  name="password" />
-          {errors.password && touched.password ? (
-            <div>{errors.password}</div>
+          <Field placeholder = 'Ваш пароль'  name="pass" />
+          {errors.pass && touched.password ? (
+            <div>{errors.pass}</div>
           ) : null}
           <button type="submit">Submit</button>
         </Form>
