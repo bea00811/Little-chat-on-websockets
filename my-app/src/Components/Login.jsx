@@ -1,46 +1,59 @@
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 
 
 const SignupSchema = Yup.object().shape({
-  firstName: Yup.string()
+  nickName: Yup.string()
     .min(2, 'Минимум 2 буквы')
     .max(50, 'Максимум 50 букв')
     .required('Обязательное поле'),
-  lastName: Yup.string()
-    .min(2, 'Минимум 2 буквы')
-    .max(50, 'Максимум 50 букв')
-    .required('Обязательное поле'),
-  email: Yup.string().email('Неверный email').required('Обязательное поле'),
+  password:Yup.string()
+  .min(8, 'Password must be 8 characters long')
+  .matches(/[0-9]/, 'Password requires a number')
+  .matches(/[a-z]/, 'Password requires a lowercase letter')
+  .matches(/[A-Z]/, 'Password requires an uppercase letter')
+  .matches(/[^\w]/, 'Password requires a symbol')
+  .required('Обязательное поле'),
 });
+
+const sendRequest  = async (value) => {
+  try {
+      const resp = await axios.post('/api/v1/login', value);
+      console.log(resp.data);
+  } catch (err) {
+      // Handle Error Here
+      console.error(err);
+  }
+}
 
 export const ValidationSchemaExample = () => (
   <div>
     <h1>Signup</h1>
     <Formik
       initialValues={{
-        firstName: '',
-        lastName: '',
-        email: '',
+        nickName: '',
+        password: '',
       }}
+      
       validationSchema={SignupSchema}
       onSubmit={ (values) => {
         console.log(values);
+        sendRequest(values)
+        
       }}
     >
       {({ errors, touched }) => (
         <Form>
-          <Field name="firstName" />
-          {errors.firstName && touched.firstName ? (
-            <div>{errors.firstName}</div>
+          <Field placeholder = 'Ваш Ник' name="nickName" />
+          {errors.nickName && touched.nickName ? (
+            <div>{errors.nickName}</div>
           ) : null}
-          <Field name="lastName" />
-          {errors.lastName && touched.lastName ? (
-            <div>{errors.lastName}</div>
+          <Field placeholder = 'Ваш пароль'  name="password" />
+          {errors.password && touched.password ? (
+            <div>{errors.password}</div>
           ) : null}
-          <Field name="email" type="email" />
-          {errors.email && touched.email ? <div>{errors.email}</div> : null}
           <button type="submit">Submit</button>
         </Form>
       )}
