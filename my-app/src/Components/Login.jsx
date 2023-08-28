@@ -10,11 +10,11 @@ const SignupSchema = Yup.object().shape({
     .max(50, 'Максимум 50 букв')
     .required('Обязательное поле'),
   password:Yup.string()
-  .min(8, 'Password must be 8 characters long')
+  /*.min(8, 'Password must be 8 characters long')
   .matches(/[0-9]/, 'Password requires a number')
   .matches(/[a-z]/, 'Password requires a lowercase letter')
   .matches(/[A-Z]/, 'Password requires an uppercase letter')
-  .matches(/[^\w]/, 'Password requires a symbol')
+  .matches(/[^\w]/, 'Password requires a symbol')*/
   .required('Обязательное поле'),
 });
 
@@ -40,7 +40,9 @@ export const ValidationSchemaExample = () => (
       validationSchema={SignupSchema}
       onSubmit={ (values) => {
         console.log(values);
-        sendRequest(values)
+         const {nickName,password} = values
+         const userData = { username: nickName, password: password};
+        sendRequest(userData )
         
       }}
     >
