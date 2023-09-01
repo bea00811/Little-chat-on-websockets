@@ -1,8 +1,8 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { PageOne, PageTwo, ErrorPage } from './Components/Page.jsx';
-import {ValidationSchemaExample}from './Components/Login.jsx';
-import { MainPage }from './Components//MainPage.jsx';
+import ValidationSchemaExample from './Components/Login.jsx';
+import MainPage from './Components//MainPage.jsx';
 
 function App() {
   return (

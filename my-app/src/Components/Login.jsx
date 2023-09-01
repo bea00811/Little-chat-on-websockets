@@ -1,6 +1,6 @@
 import { Formik, Form, Field } from 'formik';
 import { Navigate } from "react-router-dom";
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import axios from 'axios';
 
@@ -21,33 +21,39 @@ const SignupSchema = Yup.object().shape({
   .required('Обязательное поле'),
 });
 
-const sendRequest  = async (value) => {
-  try {
-      const resp = await axios.post('/api/v1/login', value);
-      console.log(resp.data);
-      localStorage.setItem('token', resp.data.token);
-      localStorage.setItem('username', resp.data.username);
-      console.log(localStorage.token)
-      console.log(localStorage.username)
-      console.log(localStorage.somedata)
-      console.log(localStorage)
+// const sendRequest  = async (value) => {
+//   try {
+//       const resp = await axios.post('/api/v1/login', value);
+//       console.log(resp.data);
+//       localStorage.setItem('token', resp.data.token);
+//       localStorage.setItem('username', resp.data.username);
+//       console.log(localStorage.token)
+//       console.log(localStorage.username)
+//       console.log(localStorage.somedata)
+//       console.log(localStorage)
+//       const emptylocalStorage = !Object.keys(localStorage).length
+//       console.log(emptylocalStorage)
+//       if(emptylocalStorage){
+//         <Navigate to="/login"/>
+//       }
+// // const navigate = useNavigate();   
+// // const handleClick = () => navigate('/one');
+// //       handleClick();
 
-// const navigate = useNavigate();   
-// const handleClick = () => navigate('/one');
-//       handleClick();
-    window.location.href =  <Navigate to="/one"/>
-      return resp.data;
-  } catch (err) {
-      // Handle Error Here
-      console.error(err);
-      return err;
-  }
-}
+//       return resp.data;
+//   } catch (err) {
+//       // Handle Error Here
+//       console.error(err);
+//       return err;
+//   }
+// }
 
-export const ValidationSchemaExample = () => (
-  <div>
+ function ValidationSchemaExample  ()  {
+  const navigate = useNavigate(); 
+    return(  
+      <div>
     <h1>Signup</h1>
-    
+  
     <Formik
       initialValues={{
         nickName: '',
@@ -55,11 +61,36 @@ export const ValidationSchemaExample = () => (
       }}
       
       validationSchema={SignupSchema}
-      onSubmit={ (values) => {
+      onSubmit={ async (values) => {
         console.log(values);
          const {nickName,pass} = values
          const userData = { username: nickName, password: pass};
-       return sendRequest(userData )
+         try {
+          const resp = await axios.post('/api/v1/login', userData );
+          console.log(resp.data);
+          localStorage.setItem('token', resp.data.token);
+          localStorage.setItem('username', resp.data.username);
+          console.log(localStorage.token)
+          console.log(localStorage.username)
+          console.log(localStorage.somedata)
+          console.log(localStorage)
+          const emptylocalStorage = !Object.keys(localStorage).length
+          console.log(emptylocalStorage)
+          const handleClick = () => navigate('/');
+          handleClick();
+          if(emptylocalStorage){
+            <Navigate to="/login"/>
+          }
+    // const navigate = useNavigate();   
+    // const handleClick = () => navigate('/one');
+    //       handleClick();
+    
+          return resp.data;
+      } catch (err) {
+          // Handle Error Here
+          console.error(err);
+          return err;
+      }
         
       }}
     >
@@ -70,7 +101,7 @@ export const ValidationSchemaExample = () => (
             <div>{errors.nickName}</div>
           ) : null}
           <Field placeholder = 'Ваш пароль'  name="pass" />
-          {errors.pass && touched.password ? (
+          {errors.pass && touched.pass ? (
             <div>{errors.pass}</div>
           ) : null}
           <button type="submit">Submit</button>
@@ -78,4 +109,7 @@ export const ValidationSchemaExample = () => (
       )}
     </Formik>
   </div>
-);
+  )
+};
+
+export default ValidationSchemaExample
