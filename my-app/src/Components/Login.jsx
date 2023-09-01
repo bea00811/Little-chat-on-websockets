@@ -1,6 +1,9 @@
 import { Formik, Form, Field } from 'formik';
+import { Navigate } from "react-router-dom";
+// import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import axios from 'axios';
+
 
 
 
@@ -22,15 +25,29 @@ const sendRequest  = async (value) => {
   try {
       const resp = await axios.post('/api/v1/login', value);
       console.log(resp.data);
+      localStorage.setItem('token', resp.data.token);
+      localStorage.setItem('username', resp.data.username);
+      console.log(localStorage.token)
+      console.log(localStorage.username)
+      console.log(localStorage.somedata)
+      console.log(localStorage)
+
+// const navigate = useNavigate();   
+// const handleClick = () => navigate('/one');
+//       handleClick();
+    window.location.href =  <Navigate to="/one"/>
+      return resp.data;
   } catch (err) {
       // Handle Error Here
       console.error(err);
+      return err;
   }
 }
 
 export const ValidationSchemaExample = () => (
   <div>
     <h1>Signup</h1>
+    
     <Formik
       initialValues={{
         nickName: '',
@@ -42,7 +59,7 @@ export const ValidationSchemaExample = () => (
         console.log(values);
          const {nickName,pass} = values
          const userData = { username: nickName, password: pass};
-        sendRequest(userData )
+       return sendRequest(userData )
         
       }}
     >
