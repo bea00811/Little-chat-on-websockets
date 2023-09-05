@@ -6,9 +6,27 @@ import MainPage from './Components//MainPage.jsx';
 import { createContext } from 'react';
 
 function App() {
+  
   const LoginContext = createContext({});
+  const ThemeContext = createContext({});
+ 
+  const user = localStorage.getItem('username')
+  const user1 = {key:'value'}
+  console.log(user)
+  console.log(user1)
+
+  const ThemeProvider = ({ children }) => {
+
+    return (
+      <ThemeContext.Provider value={{user1}}>
+        {children}
+      </ThemeContext.Provider>
+    ); 
+    // END
+  };
+
   return (
-    <LoginContext.Provider value={'somethingIdontKnow'}>
+    <ThemeProvider>
     <BrowserRouter>
       <Routes>
         <Route path="*" element={<ErrorPage />} />
@@ -18,7 +36,7 @@ function App() {
         <Route path="two" element={<PageTwo />} />
       </Routes>
     </BrowserRouter>
-    </LoginContext.Provider>
+    </ThemeProvider>
    
   );
 }

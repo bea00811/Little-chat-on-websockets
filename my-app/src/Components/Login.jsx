@@ -3,10 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useContext } from 'react';
-
-
-
-
+import LoginContext from '../App.js';
+import ThemeContext from '../App.js';
 
 const SignupSchema = Yup.object().shape({
   nickName: Yup.string()
@@ -14,10 +12,7 @@ const SignupSchema = Yup.object().shape({
     .max(50, 'Максимум 50 букв')
     .required('Обязательное поле'),
   pass:Yup.string()
-  .min(4
-    
-    
-    , 'Password must be 8 characters long')
+  .min(4, 'Password must be 8 characters long')
   /*.matches(/[0-9]/, 'Password requires a number')
   .matches(/[a-z]/, 'Password requires a lowercase letter')
   .matches(/[A-Z]/, 'Password requires an uppercase letter')
@@ -27,7 +22,8 @@ const SignupSchema = Yup.object().shape({
 
 function ValidationSchemaExample  ()  {
   const navigate = useNavigate(); 
-  const user = useContext(LoginContext);
+  const  {user1}= useContext(ThemeContext);
+  console.log(user1)
     return(  
       <div>
       <h1>Signup</h1>
@@ -61,13 +57,13 @@ function ValidationSchemaExample  ()  {
           }
 
 
-         const respLogin = await axios.get('/api/v1/data', {
-            headers: {
-              'Authorization': authData.token
-            }
-          })
+        //  const respLogin = await axios.get('/api/v1/data', {
+        //     headers: {
+        //       'Authorization': authData.token
+        //     }
+        //   })
 
-          console.log(respLogin.data)
+        //   console.log(respLogin.data)
 
       return resp.data;
       } catch (err) {
