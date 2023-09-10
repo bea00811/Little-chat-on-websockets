@@ -22,8 +22,8 @@ const SignupSchema = Yup.object().shape({
 
 function ValidationSchemaExample() {
   const navigate = useNavigate();
-  const user1 = useContext(LoginContext);
-  console.log(user1);
+  const user13 = useContext(LoginContext);
+  console.log(user13);
   return (
     <div>
       <h1>Signup</h1>
@@ -55,13 +55,13 @@ function ValidationSchemaExample() {
               navigate('/login');
             }
 
-             const respLogin = await axios.get('/api/v1/data', {
-                 headers: {
-                 'Authorization': authData.token
-                 }
-               })
+            const respLogin = await axios.get('/api/v1/data', {
+              headers: {
+                Authorization: `Bearer ${authData.token}`,
+              },
+            });
 
-              console.log(respLogin.data)
+            console.log(respLogin.data);
 
             return resp.data;
           } catch (err) {
