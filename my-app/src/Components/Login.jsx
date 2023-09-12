@@ -2,9 +2,7 @@ import { Formik, Form, Field } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import axios from 'axios';
-import { useContext } from 'react';
-import LoginContext from '../App.js';
-import ThemeContext from '../App.js';
+import useAuth from './useAuthContext';
 
 const SignupSchema = Yup.object().shape({
   nickName: Yup.string()
@@ -21,9 +19,10 @@ const SignupSchema = Yup.object().shape({
 });
 
 function ValidationSchemaExample() {
+  let { logIn, loggedIn } = useAuth();
   const navigate = useNavigate();
-  const user13 = useContext(LoginContext);
-  console.log(user13);
+  console.log('login1:' + loggedIn);
+
   return (
     <div>
       <h1>Signup</h1>
@@ -46,13 +45,22 @@ function ValidationSchemaExample() {
 
             localStorage.setItem('token', resp.data.token);
             localStorage.setItem('username', resp.data.username);
-            console.log(localStorage);
+
             const emptylocalStorage = !Object.keys(localStorage).length;
             console.log(emptylocalStorage);
+            console.log(loggedIn);
+
+            console.log(loggedIn);
             navigate('/');
 
             if (emptylocalStorage) {
               navigate('/login');
+            } else {
+              console.log('logIn()' + logIn);
+              console.log(logIn());
+              logIn();
+              console.log(localStorage);
+              console.log('login2:' + loggedIn);
             }
 
             const respLogin = await axios.get('/api/v1/data', {
