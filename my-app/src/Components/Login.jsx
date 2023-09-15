@@ -1,8 +1,10 @@
 import { Formik, Form, Field } from 'formik';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import axios from 'axios';
 import useAuth from './useAuthContext';
+import { getAllChannels } from '../slices/channelSlice.js';
 
 const SignupSchema = Yup.object().shape({
   nickName: Yup.string()
@@ -19,10 +21,8 @@ const SignupSchema = Yup.object().shape({
 });
 
 function ValidationSchemaExample() {
-  let { logIn, loggedIn } = useAuth();
+  let { logIn } = useAuth();
   const navigate = useNavigate();
-  console.log('login1:' + loggedIn);
-
   return (
     <div>
       <h1>Signup</h1>
@@ -41,35 +41,21 @@ function ValidationSchemaExample() {
             const resp = await axios.post('/api/v1/login', userData);
 
             const authData = resp.data;
-            console.log(authData.token);
 
             localStorage.setItem('token', resp.data.token);
             localStorage.setItem('username', resp.data.username);
 
-            const emptylocalStorage = !Object.keys(localStorage).length;
-            console.log(emptylocalStorage);
-            console.log(loggedIn);
+            const localStorageKeysLength = Object.keys(localStorage).length;
+            console.log(Object.keys(localStorage));
+            console.log(localStorage.token);
 
-            console.log(loggedIn);
             navigate('/');
 
-            if (emptylocalStorage) {
+            if (localStorageKeysLength === 0) {
               navigate('/login');
-            } else {
-              console.log('logIn()' + logIn);
-              console.log(logIn());
-              logIn();
-              console.log(localStorage);
-              console.log('login2:' + loggedIn);
             }
 
-            const respLogin = await axios.get('/api/v1/data', {
-              headers: {
-                Authorization: `Bearer ${authData.token}`,
-              },
-            });
-
-            console.log(respLogin.data);
+            logIn();
 
             return resp.data;
           } catch (err) {

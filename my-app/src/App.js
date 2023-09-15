@@ -2,9 +2,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { PageOne, PageTwo, ErrorPage } from './Components/Page.jsx';
 import ValidationSchemaExample from './Components/Login.jsx';
-import MainPage from './Components//MainPage.jsx';
+import MainPage from './Components/MainPage.jsx';
 import { useState } from 'react';
 import AuthContext from './Components/CreateContext.jsx';
+import { Provider } from 'react-redux';
+import store from './slices/index.js';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -26,21 +28,23 @@ const AuthProvider = ({ children }) => {
 
 function App() {
   return (
-    <AuthProvider>
-      <div>
-        <BrowserRouter>
-          <Routes>
-            <Route path="*" element={<ErrorPage />} />
-            <Route path="/" element={<MainPage />} />
+    <Provider store={store}>
+      <AuthProvider>
+        <div>
+          <BrowserRouter>
+            <Routes>
+              <Route path="*" element={<ErrorPage />} />
+              <Route path="/" element={<MainPage />} />
 
-            <Route path="/login" element={<ValidationSchemaExample />} />
+              <Route path="/login" element={<ValidationSchemaExample />} />
 
-            <Route path="one" element={<PageOne />} />
-            <Route path="two" element={<PageTwo />} />
-          </Routes>
-        </BrowserRouter>
-      </div>
-    </AuthProvider>
+              <Route path="one" element={<PageOne />} />
+              <Route path="two" element={<PageTwo />} />
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </AuthProvider>
+    </Provider>
   );
 }
 
