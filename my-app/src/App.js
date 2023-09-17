@@ -6,7 +6,7 @@ import MainPage from './Components/MainPage.jsx';
 import { useState } from 'react';
 import AuthContext from './Components/CreateContext.jsx';
 import { Provider } from 'react-redux';
-import store from './slices/index.js';
+import store from './slices/configureStore.js';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);

@@ -1,10 +1,8 @@
 import { Formik, Form, Field } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import axios from 'axios';
 import useAuth from './useAuthContext';
-import { getAllChannels } from '../slices/channelSlice.js';
 
 const SignupSchema = Yup.object().shape({
   nickName: Yup.string()
@@ -40,14 +38,11 @@ function ValidationSchemaExample() {
           try {
             const resp = await axios.post('/api/v1/login', userData);
 
-            const authData = resp.data;
-
             localStorage.setItem('token', resp.data.token);
             localStorage.setItem('username', resp.data.username);
 
             const localStorageKeysLength = Object.keys(localStorage).length;
-            console.log(Object.keys(localStorage));
-            console.log(localStorage.token);
+            console.log(localStorage);
 
             navigate('/');
 

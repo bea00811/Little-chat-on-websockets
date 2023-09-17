@@ -9,11 +9,7 @@ const channelSlice = createSlice({
   initialState,
   reducers: {
     getAllChannels: (state = initialState, action) => {
-      const newState = state;
-      newState.channels = action.payload;
-    },
-    getAllChannels2: (state = initialState, action) => {
-      const newState = state;
+      const newState = state
       newState.channels = action.payload;
     },
   },
