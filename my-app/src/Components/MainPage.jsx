@@ -5,11 +5,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getAllChannels } from '../slices/channelSlice.js';
 import { getAllMessages } from '../slices/messagesSlice.js';
 import axios from 'axios';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+import { io } from 'socket.io-client';
 
 export default function MainPage() {
   const { loggedIn } = useAuth();
   console.log(loggedIn);
   const dispatch = useDispatch();
+  const socket = io();
 
   useEffect(() => {
     try {
@@ -20,8 +24,8 @@ export default function MainPage() {
           },
         });
         console.log(serverDataLogUser.data);
-        dispatch(getAllChannels(serverDataLogUser.data));
-        dispatch(getAllMessages(serverDataLogUser.data));
+        dispatch(getAllChannels(serverDataLogUser.data.channels));
+        dispatch(getAllMessages(serverDataLogUser.data.messages));
       }
       getChannels();
     } catch (err) {
@@ -29,19 +33,58 @@ export default function MainPage() {
     }
   }, []);
 
-  const channelsData = useSelector((state) => state.channels.channels.channels);
+  const channelsData = useSelector((state) => state.channels.channels);
   const messagesData = useSelector((state) => state.messages2.messages1);
-  channelsData && channelsData.map((item) => console.log(item));
+  console.log(channelsData);
+  // channelsData.map((item) => console.log(item));
 
   console.log(messagesData);
   console.log(localStorage);
+
+  const SignupSchema = Yup.object().shape({
+    message: Yup.string()
+      .min(2, 'Минимум 2 буквы')
+      .max(500, 'Максимум 50 букв')
+      .required('Обязательное поле'),
+  });
 
   return (
     <div>
       <h1>MainPage</h1>
       <ul>
-        {channelsData && channelsData.map((item) => <li>{item.name}</li>)}
+        {channelsData &&
+          channelsData.map((item) => <li key={item.id}>{item.name}</li>)}
       </ul>
+      <h2>Type your message here</h2>
+      <Formik
+        initialValues={{
+          message: '',
+        }}
+        validationSchema={SignupSchema}
+        onSubmit={(value) => {
+          if (!value === '') {
+            socket.emit('chatMessage', value);
+            value = '';
+          }
+          console.log(value);
+        }}
+      >
+        {({ errors, touched }) => (
+          <Form>
+            <Field placeholder="Ваше сообщение" name="message" />
+            {errors.message && touched.message ? (
+              <div>{errors.message}</div>
+            ) : null}
+            <button type="submit">Submit</button>
+          </Form>
+        )}
+      </Formik>
+
+      {io.on('connection', (socket) => {
+        socket.on('chatMessage', (msg) => {
+          console.log('message: ' + msg);
+        });
+      })}
     </div>
   );
 }
