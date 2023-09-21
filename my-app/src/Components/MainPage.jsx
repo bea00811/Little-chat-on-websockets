@@ -49,7 +49,7 @@ export default function MainPage() {
       .required('Обязательное поле'),
   });
   socket.on('chatMessage', (msg) => {
-    console.log('this is socket')
+    console.log('msg from socket.on')
     console.log('message: ' + msg);
     dispatch(sendMessages(msg));
   });
@@ -67,11 +67,14 @@ export default function MainPage() {
         }}
         validationSchema={SignupSchema}
         onSubmit={(value) => {
-          if (!value === '') {
-            socket.emit('chatMessage', value);
-            value = '';
+          if (value) {
+            socket.emit('chatMessage', value.message);
+            
+            console.log('msg from socket.emit');
+              console.log(value);
+              value = '';
           }
-          console.log(value);
+        
         }}
       >
         {({ errors, touched }) => (
