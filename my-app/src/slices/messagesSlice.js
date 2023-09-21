@@ -6,7 +6,7 @@ const initialState = {
   
 };
 const messagesSlice = createSlice({
-  name: 'channels',
+  name: 'messages',
   initialState,
   reducers: {
     getAllMessages: (state = initialState, action) => {
