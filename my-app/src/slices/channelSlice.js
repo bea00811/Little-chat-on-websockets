@@ -4,6 +4,7 @@ const initialState = {
   channels: [],
   currentChannel: 1,
 };
+
 const channelSlice = createSlice({
   name: 'channels',
   initialState,

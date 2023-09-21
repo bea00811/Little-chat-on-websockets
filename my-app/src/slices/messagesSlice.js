@@ -1,18 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  messages1: [],
+  messages: [],
+  
+  
 };
 const messagesSlice = createSlice({
   name: 'channels',
   initialState,
   reducers: {
     getAllMessages: (state = initialState, action) => {
-      state.messages1 = action.payload;
+      state.messages = action.payload;
     },
+    sendMessages:(state = initialState, action)=>{
+      state.messages.push(action)
+    }
   },
 });
 
-export const { getAllMessages } = messagesSlice.actions;
+export const { getAllMessages,sendMessages } = messagesSlice.actions;
 
 export default messagesSlice.reducer;

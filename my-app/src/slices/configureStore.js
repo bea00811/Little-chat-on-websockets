@@ -5,6 +5,6 @@ import getAllMessages from './messagesSlice.js';
 export default configureStore({
   reducer: {
     channels: getAllChannels,
-    messages2: getAllMessages,
+    messages: getAllMessages,
   },
 });

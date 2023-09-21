@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import useAuth from './useAuthContext';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllChannels } from '../slices/channelSlice.js';
-import { getAllMessages } from '../slices/messagesSlice.js';
+import { getAllMessages, sendMessages } from '../slices/messagesSlice.js';
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -34,8 +34,9 @@ export default function MainPage() {
   }, []);
 
   const channelsData = useSelector((state) => state.channels.channels);
-  const messagesData = useSelector((state) => state.messages2.messages1);
+  const messagesData = useSelector((state) => state.messages.messages);
   console.log(channelsData);
+  console.log(messagesData);
   // channelsData.map((item) => console.log(item));
 
   console.log(messagesData);
@@ -47,7 +48,11 @@ export default function MainPage() {
       .max(500, 'Максимум 50 букв')
       .required('Обязательное поле'),
   });
-
+  socket.on('chatMessage', (msg) => {
+    console.log('this is socket')
+    console.log('message: ' + msg);
+    dispatch(sendMessages(msg));
+  });
   return (
     <div>
       <h1>MainPage</h1>
@@ -80,11 +85,9 @@ export default function MainPage() {
         )}
       </Formik>
 
-      {io.on('connection', (socket) => {
-        socket.on('chatMessage', (msg) => {
-          console.log('message: ' + msg);
-        });
-      })}
+     
+     
+  
     </div>
   );
 }
