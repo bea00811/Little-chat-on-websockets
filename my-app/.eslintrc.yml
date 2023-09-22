@@ -1,0 +1,23 @@
+root: true
+ 
+plugins:
+  - functional
+
+
+extends:
+  - "plugin:functional/recommended"
+ 
+parser: "@babel/eslint-parser"
+
+ 
+env:
+  browser: true
+  node: true
+  jest: true
+ 
+settings:
+  import/resolver:
+    - node
+    - webpack
+ 
+rules: {}

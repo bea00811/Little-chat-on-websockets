@@ -37,6 +37,7 @@ export default function MainPage() {
   const messagesData = useSelector((state) => state.messages.messages);
   console.log(channelsData);
   console.log(messagesData);
+  messagesData.map((item)=>console.log(item.message));
   // channelsData.map((item) => console.log(item));
 
   console.log(messagesData);
@@ -48,33 +49,37 @@ export default function MainPage() {
       .max(500, 'Максимум 50 букв')
       .required('Обязательное поле'),
   });
-  socket.on('chatMessage', (msg) => {
+  socket.on('newMessage', (msg) => {
     console.log('msg from socket.on')
-    console.log('message: ' + msg);
+    console.log(msg);
     dispatch(sendMessages(msg));
   });
   return (
     <div>
-      <h1>MainPage</h1>
-      <ul>
+      <h1 >MainPage</h1>
+      <ul className='channelsList'>
         {channelsData &&
           channelsData.map((item) => <li key={item.id}>{item.name}</li>)}
       </ul>
-      <h2>Type your message here</h2>
+      <ul className='messagesList'>
+      { messagesData&&messagesData.map((item)=><li key={item.id}>{item.message}</li>)} 
+  {/* {useEffect(() => {
+     { messagesData&&messagesData.map((item)=><li key={item.id}>{item.message}</li>)}
+  }, messagesData)} */}
+    </ul>
+    <h2>Type your message here</h2>
       <Formik
         initialValues={{
           message: '',
         }}
         validationSchema={SignupSchema}
-        onSubmit={(value) => {
-          if (value) {
-            socket.emit('chatMessage', value.message);
-            
-            console.log('msg from socket.emit');
-              console.log(value);
-              value = '';
+        onSubmit={(value,  {setSubmitting}) => {
+          console.log('msg from socket.emit2');
+          setSubmitting(false)
+          if (value) {         
+            socket.emit('newMessage', value);
+            value = '';
           }
-        
         }}
       >
         {({ errors, touched }) => (
@@ -87,10 +92,6 @@ export default function MainPage() {
           </Form>
         )}
       </Formik>
-
-     
-     
-  
     </div>
   );
 }

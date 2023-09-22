@@ -13,7 +13,7 @@ const messagesSlice = createSlice({
       state.messages = action.payload;
     },
     sendMessages:(state = initialState, action)=>{
-      state.messages.push(action)
+      state.messages.push(action.payload)
     }
   },
 });

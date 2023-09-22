@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.channelsList li{
+  font-weight: 900;
+}
+
+.messagesList li{
+  list-style-type: none;
+
+}
