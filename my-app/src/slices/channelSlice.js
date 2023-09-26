@@ -13,9 +13,14 @@ const channelSlice = createSlice({
       const newState = state;
       newState.channels = action.payload;
     },
+    changeChannel:(state = initialState, action)=>{
+      const newState = state;
+      newState.currentChannel = action.payload;
+
+    }
   },
 });
 
-export const { getAllChannels } = channelSlice.actions;
+export const { getAllChannels, changeChannel } = channelSlice.actions;
 
 export default channelSlice.reducer;

@@ -7,10 +7,14 @@ import { useState } from 'react';
 import AuthContext from './Components/CreateContext.jsx';
 import { Provider } from 'react-redux';
 import store from './slices/configureStore.js';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllMessages, sendMessages } from './slices/messagesSlice.js';
+import { io } from 'socket.io-client';
+
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
 
+  const [loggedIn, setLoggedIn] = useState(false);
   const logIn = () => {
     setLoggedIn(true);
   };
@@ -19,60 +23,39 @@ const AuthProvider = ({ children }) => {
     setLoggedIn(false);
   };
 
+
+
   return (
-    <AuthContext.Provider value={{ logIn, logOut, loggedIn }}>
+    <AuthContext.Provider value={{ logIn, logOut, loggedIn}}>
       {children}
     </AuthContext.Provider>
   );
 };
 
+
+
 function App() {
+  const socket = io()
+  const dispatch = useDispatch()
+  socket.on('newMessage', (msg) => {
+  dispatch(sendMessages(msg));
+})
   return (
-    <Provider store={store}>
-      <AuthProvider>
+     <AuthProvider>
         <div>
           <BrowserRouter>
             <Routes>
               <Route path="*" element={<ErrorPage />} />
-              <Route path="/" element={<MainPage />} />
-
-              <Route path="/login" element={<ValidationSchemaExample />} />
-
+              <Route path="/" element={<MainPage name = 'Props Header' surname = 'Props SubHeader'/>} />
+              <Route path="/login" element={<ValidationSchemaExample  />} />
               <Route path="one" element={<PageOne />} />
               <Route path="two" element={<PageTwo />} />
             </Routes>
           </BrowserRouter>
         </div>
       </AuthProvider>
-    </Provider>
+
   );
 }
 
 export default App;
-// const ThemeContext = createContext({});
-// const user = localStorage.getItem('username');
-
-// const ThemeProvider = ({ children }) => {
-//   return (
-//     <ThemeContext.Provider value={{ user1 }}>
-//       {children}
-//     </ThemeContext.Provider>
-//   );
-//   // END
-// };
-
-// const AuthProvider = ({ children }) => {
-//   const [loggedIn, setLoggedIn] = useState(false);
-
-//   const logIn = () => setLoggedIn(true);
-//   const logOut = () => {
-//     localStorage.removeItem('userId');
-//     setLoggedIn(false);
-//   };
-
-//   return (
-//     <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };

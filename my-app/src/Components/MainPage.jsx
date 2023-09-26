@@ -1,21 +1,29 @@
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+ 	
+import { Modal, Button } from "react-bootstrap";
 import useAuth from './useAuthContext';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllChannels } from '../slices/channelSlice.js';
+import { getAllChannels, changeChannel } from '../slices/channelSlice.js';
 import { getAllMessages, sendMessages } from '../slices/messagesSlice.js';
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { io } from 'socket.io-client';
 
-export default function MainPage() {
+export default function MainPage(props) {
   const { loggedIn } = useAuth();
   console.log(loggedIn);
   const dispatch = useDispatch();
   const socket = io();
 
-  useEffect(() => {
+     
+  const [showModal, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+
+
+ useEffect(() => {
     try {
       async function getChannels() {
         const serverDataLogUser = await axios.get('/api/v1/data', {
@@ -26,6 +34,7 @@ export default function MainPage() {
         console.log(serverDataLogUser.data);
         dispatch(getAllChannels(serverDataLogUser.data.channels));
         dispatch(getAllMessages(serverDataLogUser.data.messages));
+
       }
       getChannels();
     } catch (err) {
@@ -33,15 +42,23 @@ export default function MainPage() {
     }
   }, []);
 
-  const channelsData = useSelector((state) => state.channels.channels);
-  const messagesData = useSelector((state) => state.messages.messages);
-  console.log(channelsData);
-  console.log(messagesData);
-  messagesData.map((item)=>console.log(item.message));
-  // channelsData.map((item) => console.log(item));
+  const channelSwitcher = (id, channelData, dispatch)=>{
+  console.log(id)
+  const currentChannel = channelData.find(item =>item.id ===id)
+  console.log(currentChannel)
+   dispatch(changeChannel(currentChannel.id))
+ }
 
-  console.log(messagesData);
-  console.log(localStorage);
+ const channelsData = useSelector((state) => state.channels.channels);
+ const currentChannel = useSelector((state) => state.channels.currentChannel);
+ const messagesData = useSelector((state) => state.messages.messages);
+ const currentChannelHere = channelsData.find(item=>item.id === currentChannel)
+
+ console.log(channelsData)
+ console.log(currentChannel)
+ console.log(messagesData)
+ console.log(currentChannelHere&&currentChannelHere.name)
+
 
   const SignupSchema = Yup.object().shape({
     message: Yup.string()
@@ -49,24 +66,28 @@ export default function MainPage() {
       .max(500, 'Максимум 50 букв')
       .required('Обязательное поле'),
   });
-  socket.on('newMessage', (msg) => {
-    console.log('msg from socket.on')
-    console.log(msg);
-    dispatch(sendMessages(msg));
-  });
+
   return (
     <div>
       <h1 >MainPage</h1>
-      <ul className='channelsList'>
-        {channelsData &&
-          channelsData.map((item) => <li key={item.id}>{item.name}</li>)}
-      </ul>
+      <p>{props.name}</p>
+      <h4>{props.surname}</h4>
+      <div className = 'channelsContainer'>
+      <Button className='addChannel' variant="primary" onClick={handleShow}>
+          Launch demo modal
+        </Button>
+          <ul className='channelsList'>
+            {channelsData &&
+              channelsData.map((item) => <li key={item.id}> <button onClick={()=>channelSwitcher(item.id, channelsData, dispatch)} type = 'button' className ='w-100 rounded-0 text-start btn btn-secondary'><span>#{item.name}</span></button></li>)}
+          </ul>
+      </div>
+      <div className = 'messagesContainer'>
+        { <h3>Channel Name is: <strong>{currentChannelHere&&currentChannelHere.name}</strong></h3> }
       <ul className='messagesList'>
-      { messagesData&&messagesData.map((item)=><li key={item.id}>{item.message}</li>)} 
-  {/* {useEffect(() => {
-     { messagesData&&messagesData.map((item)=><li key={item.id}>{item.message}</li>)}
-  }, messagesData)} */}
-    </ul>
+      { messagesData && messagesData.map((item)=><li key={item.id}>{item.message}</li>)}
+       </ul>
+      </div>
+     
     <h2>Type your message here</h2>
       <Formik
         initialValues={{
@@ -74,12 +95,11 @@ export default function MainPage() {
         }}
         validationSchema={SignupSchema}
         onSubmit={(value,  {setSubmitting}) => {
-          console.log('msg from socket.emit2');
           setSubmitting(false)
-          if (value) {         
+          if (value.message !== '') {         
             socket.emit('newMessage', value);
-            value = '';
           }
+          value.message = '';
         }}
       >
         {({ errors, touched }) => (
@@ -92,6 +112,20 @@ export default function MainPage() {
           </Form>
         )}
       </Formik>
+      <Modal show={showModal} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
