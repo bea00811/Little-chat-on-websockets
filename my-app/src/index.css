@@ -8,12 +8,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.channelsList{
-  max-width: 200px;
-}
-.channelsContainer{
-  max-width: 200px; 
-}
+
 .addChannel{
   float: right;
 }
@@ -29,6 +24,8 @@ code {
 }
 .channelsList li{
   font-weight: 900;
+  display: flex;
+  width: 220px;
 }
 
 .messagesList li{

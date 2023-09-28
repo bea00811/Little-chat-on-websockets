@@ -18,7 +18,7 @@ const SignupSchema = Yup.object().shape({
     .required('Обязательное поле'),
 });
 
-function ValidationSchemaExample() {
+function Login() {
   let { logIn } = useAuth();
   const navigate = useNavigate();
   return (
@@ -41,16 +41,11 @@ function ValidationSchemaExample() {
             localStorage.setItem('token', resp.data.token);
             localStorage.setItem('username', resp.data.username);
 
-            const localStorageKeysLength = Object.keys(localStorage).length;
-            console.log(localStorage);
-
+            logIn();
             navigate('/');
 
-            if (localStorageKeysLength === 0) {
-              navigate('/login');
-            }
-
-            logIn();
+        
+        
 
             return resp.data;
           } catch (err) {
@@ -76,4 +71,4 @@ function ValidationSchemaExample() {
   );
 }
 
-export default ValidationSchemaExample;
+export default Login;

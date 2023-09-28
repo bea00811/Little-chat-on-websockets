@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
- 	
+import { useNavigate } from 'react-router-dom';
 import { Modal, Button } from "react-bootstrap";
+import AddChannelModal from './AddChannelModal';
+import DeleteChannelModal from './DeleteChannelModal';
+import RenameChannelModal from './RenameChannelModal';
+import Dropdown from 'react-bootstrap/Dropdown';
 import useAuth from './useAuthContext';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllChannels, changeChannel } from '../slices/channelSlice.js';
+import { getAllChannels, changeChannel, addChannel } from '../slices/channelSlice.js';
 import { getAllMessages, sendMessages } from '../slices/messagesSlice.js';
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
@@ -12,7 +16,12 @@ import { io } from 'socket.io-client';
 
 export default function MainPage(props) {
   const { loggedIn } = useAuth();
+  const navigate = useNavigate();
   console.log(loggedIn);
+  console.log(localStorage)
+  if(!localStorage.token){
+    navigate('/login');
+  }
   const dispatch = useDispatch();
   const socket = io();
 
@@ -21,6 +30,13 @@ export default function MainPage(props) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [showDeleteChannelModal, setShowDeleteChannelModal] = useState(false);
+  const handleCloseDeleteChannelModal = () => setShowDeleteChannelModal(false);
+  const handleShowDeleteChannelModal = () => setShowDeleteChannelModal(true);
+
+  const [showRenameChannelModal, setShowRenameChannelModal] = useState(false);
+  const handleCloseRenameChannelModal = () => setShowRenameChannelModal(false);
+  const handleShowRenameChannelModal = () => setShowRenameChannelModal(true);
 
 
  useEffect(() => {
@@ -42,15 +58,10 @@ export default function MainPage(props) {
     }
   }, []);
 
-  const channelSwitcher = (id, channelData, dispatch)=>{
-  console.log(id)
-  const currentChannel = channelData.find(item =>item.id ===id)
-  console.log(currentChannel)
-   dispatch(changeChannel(currentChannel.id))
- }
 
  const channelsData = useSelector((state) => state.channels.channels);
  const currentChannel = useSelector((state) => state.channels.currentChannel);
+ 
  const messagesData = useSelector((state) => state.messages.messages);
  const currentChannelHere = channelsData.find(item=>item.id === currentChannel)
 
@@ -59,7 +70,19 @@ export default function MainPage(props) {
  console.log(messagesData)
  console.log(currentChannelHere&&currentChannelHere.name)
 
+ const deleteCurrentChannel = (e)=>{
+  const id = e.target.closest('.channelLi').dataset.id
+  handleShowDeleteChannelModal()
+  dispatch(changeChannel(id))
+}
 
+
+const renameCurrentChannel = (e)=>{
+  handleShowRenameChannelModal()
+  console.log(e.target.closest('.channelLi').dataset.id)
+  const id = e.target.closest('.channelLi').dataset.id
+  dispatch(changeChannel(id))
+}
   const SignupSchema = Yup.object().shape({
     message: Yup.string()
       .min(2, 'Минимум 2 буквы')
@@ -67,18 +90,41 @@ export default function MainPage(props) {
       .required('Обязательное поле'),
   });
 
+ 
   return (
     <div>
-      <h1 >MainPage</h1>
+      <h1>MainPage</h1>
       <p>{props.name}</p>
       <h4>{props.surname}</h4>
+      <div>
       <div className = 'channelsContainer'>
       <Button className='addChannel' variant="primary" onClick={handleShow}>
-          Launch demo modal
-        </Button>
+          Add new channel button
+      </Button>
           <ul className='channelsList'>
             {channelsData &&
-              channelsData.map((item) => <li key={item.id}> <button onClick={()=>channelSwitcher(item.id, channelsData, dispatch)} type = 'button' className ='w-100 rounded-0 text-start btn btn-secondary'><span>#{item.name}</span></button></li>)}
+              channelsData.map((item) =>  {
+                 return  item.removable ?  
+                 <li className='channelLi' key={item.id} data-id = {item.id}><button onClick={()=>dispatch(changeChannel(item.id))} type = 'button' className ='w-100 rounded-0 text-start btn btn-secondary'>
+                 <span>#{item.name}</span>
+                 </button>
+                 <div>
+                      <Dropdown>
+                      <Dropdown.Toggle id="dropdown-basic"></Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <Dropdown.Item onClick = {deleteCurrentChannel} >Delete Channel</Dropdown.Item>
+                        <Dropdown.Item onClick = {renameCurrentChannel } >Rename Channel</Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </div>
+                 </li>:
+                 <li key={item.id} data-id = {item.id}><button onClick={()=>dispatch(changeChannel(item.id))} type = 'button' className ='w-100 rounded-0 text-start btn btn-secondary'>
+                  <span>#{item.name}</span>
+                  </button> 
+                </li>
+            
+              }
+              )}
           </ul>
       </div>
       <div className = 'messagesContainer'>
@@ -87,16 +133,16 @@ export default function MainPage(props) {
       { messagesData && messagesData.map((item)=><li key={item.id}>{item.message}</li>)}
        </ul>
       </div>
-     
+      </div>
     <h2>Type your message here</h2>
       <Formik
         initialValues={{
           message: '',
         }}
         validationSchema={SignupSchema}
-        onSubmit={(value,  {setSubmitting}) => {
+        onSubmit={async (value,  {setSubmitting}) => {
           setSubmitting(false)
-          if (value.message !== '') {         
+         if (value.message !== '') {         
             socket.emit('newMessage', value);
           }
           value.message = '';
@@ -105,27 +151,13 @@ export default function MainPage(props) {
         {({ errors, touched }) => (
           <Form>
             <Field placeholder="Ваше сообщение" name="message" />
-            {errors.message && touched.message ? (
-              <div>{errors.message}</div>
-            ) : null}
+            {errors.message && touched.message ? (<div>{errors.message}</div>) : null}
             <button type="submit">Submit</button>
           </Form>
         )}
       </Formik>
-      <Modal show={showModal} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <AddChannelModal showModal = {showModal} handleClose = {handleClose}/>
+      <DeleteChannelModal showDeleteChannelModal = {showDeleteChannelModal} handleCloseDeleteChannelModal = {handleCloseDeleteChannelModal}/>
+      <RenameChannelModal showModal = {showRenameChannelModal} handleClose = {handleCloseRenameChannelModal}/>
     </div>
-  );
-}
+  )}
