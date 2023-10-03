@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { PageOne, PageTwo, ErrorPage } from './Components/Page.jsx';
 import Login from './Components/Login.jsx';
 import MainPage from './Components/MainPage.jsx';
+import SighnUpPage from './Components/SighnUp.jsx';
 import { useState } from 'react';
 import AuthContext from './Components/CreateContext.jsx';
 import { useDispatch } from 'react-redux';
@@ -13,21 +14,28 @@ import { deleteChannel } from './slices/channelSlice.js';
 import { renameChannel } from './slices/channelSlice.js';
 
 
-const AuthProvider = ({ children }) => {
 
+const AuthProvider = ({ children }) => {
+ 
   const [loggedIn, setLoggedIn] = useState(false);
-  const logIn = () => {
+  const logIn = (token, username) => {
+    const userData = {userToken:token, user:username}
+    localStorage.setItem('user', JSON.stringify(userData))
     setLoggedIn(true);
   };
   const logOut = () => {
-    localStorage.removeItem('userId');
+    localStorage.removeItem('user');
     setLoggedIn(false);
+  
+    console.log(localStorage)
+    console.log(loggedIn)
+    console.log(localStorage.user)
   };
 
 
 
   return (
-    <AuthContext.Provider value={{ logIn, logOut, loggedIn}}>
+    <AuthContext.Provider value={{ logIn, logOut, loggedIn, setLoggedIn}}>
       {children}
     </AuthContext.Provider>
   );
@@ -61,7 +69,8 @@ socket.on('renameChannel', (channel) => {
             <Routes>
               <Route path="*" element={<ErrorPage />} />
               <Route path="/" element={<MainPage name = 'Props Header' surname = 'Props SubHeader'/>} />
-              <Route path="/login" element={<Login  />} />
+              <Route path="/login" element={<Login/>} />
+              <Route path="/sighnup" element={<SighnUpPage/>} />              
               <Route path="one" element={<PageOne />} />
               <Route path="two" element={<PageTwo />} />
             </Routes>

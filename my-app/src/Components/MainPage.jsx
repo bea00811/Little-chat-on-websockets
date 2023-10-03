@@ -1,28 +1,42 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Modal, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import AddChannelModal from './AddChannelModal';
 import DeleteChannelModal from './DeleteChannelModal';
 import RenameChannelModal from './RenameChannelModal';
 import Dropdown from 'react-bootstrap/Dropdown';
 import useAuth from './useAuthContext';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllChannels, changeChannel, addChannel } from '../slices/channelSlice.js';
-import { getAllMessages, sendMessages } from '../slices/messagesSlice.js';
+import { getAllChannels, changeChannel} from '../slices/channelSlice.js';
+import { getAllMessages } from '../slices/messagesSlice.js';
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { io } from 'socket.io-client';
+import MyHeader from './Header';
+
 
 export default function MainPage(props) {
-  const { loggedIn } = useAuth();
+
+
+    const { loggedIn, setLoggedIn} = useAuth();
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   console.log(loggedIn);
   console.log(localStorage)
-  if(!localStorage.token){
-    navigate('/login');
+  
+  useEffect(() => {
+  if(!localStorage.user){
+     navigate('/login');
+    console.log('not registerd')
+    setLoggedIn(false)
+  }else{
+    setLoggedIn(true)
   }
-  const dispatch = useDispatch();
+}, []);
+
+
   const socket = io();
 
      
@@ -40,14 +54,15 @@ export default function MainPage(props) {
 
 
  useEffect(() => {
+  if(loggedIn){
     try {
       async function getChannels() {
+        const token = localStorage.user?JSON.parse(localStorage.user).userToken:null
         const serverDataLogUser = await axios.get('/api/v1/data', {
           headers: {
-            Authorization: `Bearer ${localStorage.token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
-        console.log(serverDataLogUser.data);
         dispatch(getAllChannels(serverDataLogUser.data.channels));
         dispatch(getAllMessages(serverDataLogUser.data.messages));
 
@@ -56,12 +71,14 @@ export default function MainPage(props) {
     } catch (err) {
       console.log(err);
     }
+
+  }
+
   }, []);
 
 
  const channelsData = useSelector((state) => state.channels.channels);
  const currentChannel = useSelector((state) => state.channels.currentChannel);
- 
  const messagesData = useSelector((state) => state.messages.messages);
  const currentChannelHere = channelsData.find(item=>item.id === currentChannel)
 
@@ -93,7 +110,10 @@ const renameCurrentChannel = (e)=>{
  
   return (
     <div>
+      <MyHeader/>
       <h1>MainPage</h1>
+    
+  
       <p>{props.name}</p>
       <h4>{props.surname}</h4>
       <div>

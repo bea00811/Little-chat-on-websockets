@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import axios from 'axios';
 import useAuth from './useAuthContext';
+import {useState } from 'react';
+import MyHeader from './Header';
+
 
 const SignupSchema = Yup.object().shape({
   nickName: Yup.string()
@@ -21,9 +24,11 @@ const SignupSchema = Yup.object().shape({
 function Login() {
   let { logIn } = useAuth();
   const navigate = useNavigate();
+  const [error, setError]= useState(false)
   return (
     <div>
-      <h1>Signup</h1>
+      <MyHeader/>
+      <h1>Login</h1>
 
       <Formik
         initialValues={{
@@ -37,11 +42,11 @@ function Login() {
           const userData = { username: nickName, password: pass };
           try {
             const resp = await axios.post('/api/v1/login', userData);
+           const userName = resp.data.username;
+           const token = resp.data.token;
+    
 
-            localStorage.setItem('token', resp.data.token);
-            localStorage.setItem('username', resp.data.username);
-
-            logIn();
+            logIn(token, userName);
             navigate('/');
 
         
@@ -50,23 +55,33 @@ function Login() {
             return resp.data;
           } catch (err) {
             // Handle Error Here
-            console.error(err);
+            console.error(err.name);
+            console.log(err.message)
+            if(err.response.status===401){
+              setError(true)
+          }
+          if(err.response.status===401){
+            setError(true)
+        }
             return err;
           }
         }}
       >
         {({ errors, touched }) => (
           <Form>
-            <Field placeholder="Ваш Ник" name="nickName" />
+            <Field className = {errors.nickName&& touched.nickName?'form-control is-invalid':'form-control'} placeholder="Ваш Ник" name="nickName" />
             {errors.nickName && touched.nickName ? (
               <div>{errors.nickName}</div>
             ) : null}
-            <Field placeholder="Ваш пароль" name="pass" />
+            <Field className = {errors.pass&& touched.pass?'form-control is-invalid':'form-control'}placeholder="Ваш пароль" name="pass" />
             {errors.pass && touched.pass ? <div>{errors.pass}</div> : null}
             <button type="submit">Submit</button>
+            {error&&<div>User does not insist</div>}
           </Form>
         )}
       </Formik>
+      <p>Have no account yet?</p>
+      <button onClick={()=>navigate('/sighnup')}>Sighn up2</button>
     </div>
   );
 }
