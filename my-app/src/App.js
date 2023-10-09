@@ -12,6 +12,7 @@ import { io } from 'socket.io-client';
 import { addChannel} from './slices/channelSlice.js';
 import { deleteChannel } from './slices/channelSlice.js';
 import { renameChannel } from './slices/channelSlice.js';
+import ToastContainer from './Components/ToastContainer.jsx';
 
 const socket = io()
 
@@ -73,6 +74,7 @@ socket.on('renameChannel', (channel) => {
               <Route path="two" element={<PageTwo />} />
             </Routes>
           </BrowserRouter>
+          <ToastContainer/>          
         </div>
       </AuthProvider>
 

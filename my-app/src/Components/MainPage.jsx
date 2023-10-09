@@ -18,6 +18,7 @@ import MyHeader from './Header';
 import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
 import Texts from './Texts';
+import { toast } from 'react-toastify';
 const socket = io();
 
 
@@ -40,7 +41,7 @@ const socket = io();
     const channelsData = useSelector((state) => state.channels.channels);
 const currentChannel = useSelector((state) => state.channels.currentChannel);
 const messagesData = useSelector((state) => state.messages.messages);
-const currentChannelHere = channelsData.find(item=>item.id === currentChannel)
+let currentChannelHere = channelsData.find(item=>item.id === currentChannel)
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -54,19 +55,6 @@ const currentChannelHere = channelsData.find(item=>item.id === currentChannel)
     }
   }, []);
   
-//   useEffect(() => {
-//   if(!localStorage.user){
-//      navigate('/login');
-//      setLoggedIn(false)
-//   }else{
-//     setLoggedIn(true)
-//   }
-// }, []);
-
-
- 
-
-     
   const [showModal, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -100,6 +88,7 @@ if(loggedIn){
       getChannels();
     } catch (err) {
       console.log(err);
+      toast.error(err.message);
     }
 
   }
@@ -110,6 +99,7 @@ if(loggedIn){
 let filtered =[];
 if(typeof currentChannelHere === 'undefined'){
   filtered = messagesData.filter(item=>item.msgId===1)
+  currentChannelHere = channelsData.find(item=>item.id === 1)
 }else{
 filtered = messagesData.filter(item=>item.msgId===currentChannelHere.id)
 }

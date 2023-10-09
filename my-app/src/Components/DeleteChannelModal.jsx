@@ -1,20 +1,19 @@
 import { Modal, Button } from "react-bootstrap";
 import { io } from 'socket.io-client';
 import { useSelector } from 'react-redux';
-
+import { toast } from 'react-toastify';
 const socket = io();
 
 
 
 function DeleteChannelModal(props) {
     const currentChannelModal = useSelector((state) => state.modals.currentChannel);
-    console.log(currentChannelModal)
-   
     
     const deleteChannelHere = (id)=>{ 
         const valueForSocket = {};
         valueForSocket.id = id;
         socket.emit('removeChannel', valueForSocket); 
+        toast('Channel has deleted successfully!');
         props.handleCloseDeleteChannelModal()  
     } 
 

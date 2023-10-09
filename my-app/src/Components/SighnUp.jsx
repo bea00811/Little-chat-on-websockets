@@ -6,6 +6,8 @@ import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import MyHeader from './Header';
+import { toast } from 'react-toastify';
+
 
 
 const SignupSchema = Yup.object().shape({
@@ -63,7 +65,8 @@ const SignupSchema = Yup.object().shape({
 
                 return resp.data;
               } catch (err) {
-                // console.error(err.name);
+                console.log(err.message)
+                toast.error(err.message);
                 console.log(err.response.status)
                 if(err.response.status===409){
                     setError(true)

@@ -1,7 +1,9 @@
 import { Modal, Button } from "react-bootstrap";
 import { Formik, Form, Field } from 'formik';
+import { useTranslation } from 'react-i18next';
 import { io } from 'socket.io-client';
 import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 const socket = io();
 
 const newChannelValid = Yup.object().shape({
@@ -13,7 +15,7 @@ const newChannelValid = Yup.object().shape({
 
 
 function AddChannelModal(props) {
-
+  const { t } = useTranslation();
   return (
     <Modal show={props.showModal} onHide={props.handleClose}>
     <Modal.Header closeButton>
@@ -27,12 +29,11 @@ function AddChannelModal(props) {
   }}
   validationSchema={newChannelValid}
   onSubmit={async (value) => {
-    //  alert(JSON.stringify(value, null, 2));
      if (value.newChannelName !== '') {  
       const valueForSocket = {};
       valueForSocket.name =  value.newChannelName 
-      // console.log(valueForSocket)    
       socket.emit('newChannel', valueForSocket);
+      toast(t('Added new Channel'));
     }
   }}
 >

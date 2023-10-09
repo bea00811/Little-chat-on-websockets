@@ -3,6 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { io } from 'socket.io-client';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 const socket = io();
 
 const newChannelValid = Yup.object().shape({
@@ -36,6 +37,7 @@ function RenameChannelModal(props) {
       valueForSocket.id = currentChannelModal
       valueForSocket.name = value.newChannelName 
       socket.emit('renameChannel', valueForSocket);
+      toast('Channel is Renamed');
     }
   }}
 >

@@ -9,5 +9,7 @@ export default{
         'Login':'Login',
         'Submit':'Submit',
         'SighnUp':'SighnUp',
+        'Have no account yet?': 'Have no account yet?',
+        'Added new Channel'  : 'Added new Channel2' 
     }
 }

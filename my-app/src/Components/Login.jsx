@@ -6,6 +6,10 @@ import axios from 'axios';
 import useAuth from './useAuthContext';
 import {useState } from 'react';
 import MyHeader from './Header';
+import { toast } from 'react-toastify';
+
+
+
 
 
 const SignupSchema = Yup.object().shape({
@@ -34,7 +38,6 @@ function Login() {
         }}
         validationSchema={SignupSchema}
         onSubmit={async (values) => {
-          console.log(values);
           const { nickName, pass } = values;
           const userData = { username: nickName, password: pass };
           try {
@@ -45,8 +48,8 @@ function Login() {
             navigate('/');
             return resp.data;
           } catch (err) {
-            console.error(err.name);
             console.log(err.message)
+            toast.error(err.message);
             if(err.response.status===401){
               setError(true)
           }
@@ -67,8 +70,10 @@ function Login() {
           </Form>
         )}
       </Formik>
-      <p>Have no account yet?</p>
+      <p>{t('Have no account yet?')}</p>
       <button onClick={()=>navigate('/sighnup')}>{t('Sighn up')}</button>
+  
+
     </div>
   );
 }
