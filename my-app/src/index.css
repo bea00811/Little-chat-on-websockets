@@ -18,14 +18,29 @@ li{
   margin: 5px 0;
 }
 
+.page-name-container{
+  padding-left: 30px;
+  padding-top: 20px;
+}
+
+.title-container{
+  padding: 0 !important;
+}
+.messagesList{
+  min-height: 450px;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.channelsList{
+  padding-left: 0;
+}
 .channelsList li{
+
   font-weight: 900;
   display: flex;
-  width: 220px;
+  width: 100%;
 }
 
 .messagesList li{

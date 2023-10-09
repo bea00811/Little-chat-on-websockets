@@ -2,7 +2,7 @@ import { Modal, Button } from "react-bootstrap";
 import { Formik, Form, Field } from 'formik';
 import { io } from 'socket.io-client';
 import * as Yup from 'yup';
-
+const socket = io();
 
 const newChannelValid = Yup.object().shape({
   newChannelName: Yup.string()
@@ -13,7 +13,7 @@ const newChannelValid = Yup.object().shape({
 
 
 function AddChannelModal(props) {
-const socket = io();
+
   return (
     <Modal show={props.showModal} onHide={props.handleClose}>
     <Modal.Header closeButton>

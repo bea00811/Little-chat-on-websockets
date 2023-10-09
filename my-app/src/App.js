@@ -7,16 +7,16 @@ import SighnUpPage from './Components/SighnUp.jsx';
 import { useState } from 'react';
 import AuthContext from './Components/CreateContext.jsx';
 import { useDispatch } from 'react-redux';
-import { sendMessages } from './slices/messagesSlice.js';
+import { sendMessages, removeChannelMessages } from './slices/messagesSlice.js';
 import { io } from 'socket.io-client';
 import { addChannel} from './slices/channelSlice.js';
 import { deleteChannel } from './slices/channelSlice.js';
 import { renameChannel } from './slices/channelSlice.js';
 
-
+const socket = io()
 
 const AuthProvider = ({ children }) => {
- 
+
   const [loggedIn, setLoggedIn] = useState(false);
   const logIn = (token, username) => {
     const userData = {userToken:token, user:username}
@@ -26,11 +26,7 @@ const AuthProvider = ({ children }) => {
   const logOut = () => {
     localStorage.removeItem('user');
     setLoggedIn(false);
-  
-    console.log(localStorage)
-    console.log(loggedIn)
-    console.log(localStorage.user)
-  };
+   };
 
 
 
@@ -44,8 +40,9 @@ const AuthProvider = ({ children }) => {
 
 
 function App() {
-  const socket = io()
+
   const dispatch = useDispatch()
+
   socket.on('newMessage', (msg) => {
   dispatch(sendMessages(msg));
 })
@@ -56,6 +53,7 @@ socket.on('newChannel', (channel) => {
 
 socket.on('removeChannel', (channel) => {
   dispatch(deleteChannel(channel));
+  dispatch(removeChannelMessages(channel));
 })
 
 socket.on('renameChannel', (channel) => {

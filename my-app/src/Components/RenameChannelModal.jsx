@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { io } from 'socket.io-client';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
-
+const socket = io();
 
 const newChannelValid = Yup.object().shape({
   newChannelName: Yup.string()
@@ -14,8 +14,8 @@ const newChannelValid = Yup.object().shape({
 
 
 function RenameChannelModal(props) {
-const socket = io();
-const currentChannel = useSelector((state) => state.channels.currentChannel);
+
+  const currentChannelModal = useSelector((state) => state.modals.currentChannel);
 
   return (
     <Modal show={props.showModal} onHide={props.handleClose}>
@@ -31,12 +31,10 @@ const currentChannel = useSelector((state) => state.channels.currentChannel);
   validationSchema={newChannelValid}
   onSubmit={async (value) => {
     console.log(JSON.stringify(value, null, 2))
-    console.log(currentChannel)
-     if (value.newChannelName !== '') {  
+       if (value.newChannelName !== '') {  
       const valueForSocket = {};
-      valueForSocket.id = currentChannel
+      valueForSocket.id = currentChannelModal
       valueForSocket.name = value.newChannelName 
-      console.log(valueForSocket)    
       socket.emit('renameChannel', valueForSocket);
     }
   }}

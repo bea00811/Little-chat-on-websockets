@@ -2,13 +2,14 @@ import { Modal, Button } from "react-bootstrap";
 import { io } from 'socket.io-client';
 import { useSelector } from 'react-redux';
 
-
+const socket = io();
 
 
 
 function DeleteChannelModal(props) {
-    const currentChannel = useSelector((state) => state.channels.currentChannel);
-    const socket = io();
+    const currentChannelModal = useSelector((state) => state.modals.currentChannel);
+    console.log(currentChannelModal)
+   
     
     const deleteChannelHere = (id)=>{ 
         const valueForSocket = {};
@@ -30,7 +31,7 @@ function DeleteChannelModal(props) {
       <Button variant="secondary" onClick={props.handleCloseDeleteChannelModal}>
         Close
       </Button>
-      <Button variant="primary" onClick={()=>deleteChannelHere(currentChannel)}>
+      <Button variant="primary" onClick={()=>deleteChannelHere(currentChannelModal)}>
         Delete
       </Button>
     </Modal.Footer>

@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {produce} from 'immer'
 
 const initialState = {
   channels: [],
@@ -20,11 +19,12 @@ const channelSlice = createSlice({
       state.channels.push(action.payload)
     },
     deleteChannel:(state = initialState, action)=>{
-      const {id} = action.payload
+      const id = action.payload.id
+      console.log(action)
       const filteredChannels = state.channels.filter(el=>el.id!==id)
-      console.log(filteredChannels)
-      console.log('filteredChannels from deleteChannel')
       state.channels = filteredChannels
+        console.log(filteredChannels)
+        console.log(state.channels)
      },
      renameChannel:(state = initialState, action)=>{
         const newState =state
@@ -38,13 +38,8 @@ const channelSlice = createSlice({
       }
       return item
       })
-      console.log('filteredChannels from renameChannel')
-      console.log(newChannels)
-      newState.channels = newChannels
-   
-
-
-     }
+       newState.channels = newChannels
+      }
 
   },
 });
