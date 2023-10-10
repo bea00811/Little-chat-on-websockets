@@ -19,6 +19,10 @@ import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
 import Texts from './Texts';
 import { toast } from 'react-toastify';
+import  filter from 'leo-profanity';
+
+filter.clean('I have boob, etc.');
+filter.loadDictionary('ru');
 const socket = io();
 
 
@@ -80,14 +84,12 @@ if(loggedIn){
           },
         });
         alert('wow responce done!')
-        console.log(serverDataLogUser.data)
         dispatch(getAllChannels(serverDataLogUser.data.channels));
         dispatch(getAllMessages(serverDataLogUser.data.messages));
 
       }
       getChannels();
     } catch (err) {
-      console.log(err);
       toast.error(err.message);
     }
 
@@ -141,7 +143,7 @@ const renameCurrentChannel = (e)=>{
             {channelsData &&
               channelsData.map((item) =>  {
                  return  item.removable ?  
-                 <li className='channelLi' key={item.id} data-id = {item.id}><button onClick={()=>dispatch(changeChannel(item.id))} type = 'button' className ='w-100 rounded-0 text-start btn btn-secondary'>
+                 <li className='channelLi' key={item.id} data-id = {item.id}><button onClick={()=>dispatch(changeChannel(item))} type = 'button' className ='w-100 rounded-0 text-start btn btn-secondary'>
                  <span>#{item.name}</span>
                  </button>
                  <div>
@@ -154,7 +156,7 @@ const renameCurrentChannel = (e)=>{
                     </Dropdown>
                   </div>
                  </li>:
-                 <li key={item.id} data-id = {item.id}><button onClick={()=>dispatch(changeChannel(item.id))} type = 'button' className ='w-100 rounded-0 text-start btn btn-secondary'>
+                 <li key={item.id} data-id = {item.id}><button onClick={()=>dispatch(changeChannel(item))} type = 'button' className ='w-100 rounded-0 text-start btn btn-secondary'>
                   <span>#{item.name}</span>
                   </button> 
                 </li>
@@ -187,9 +189,8 @@ const renameCurrentChannel = (e)=>{
             validationSchema={SignupSchema}
             onSubmit={async (value,  {setSubmitting}) => {
               setSubmitting(false)
-              console.log(value)
-              const newValueMsg = {
-                message:value.message,
+                const newValueMsg = {                
+                message:filter.clean(value.message),
                 msgId:currentChannelHere?currentChannelHere.id:null
               }
            

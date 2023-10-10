@@ -13,7 +13,7 @@ const channelSlice = createSlice({
       state.channels = action.payload;
     },
     changeChannel:(state = initialState, action)=>{
-      state.currentChannel = action.payload;
+      state.currentChannel = action.payload.id;
     },
     addChannel:(state = initialState, action)=>{
       console.log(action)

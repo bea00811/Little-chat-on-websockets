@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import { PageOne, PageTwo, ErrorPage } from './Components/Page.jsx';
 import Login from './Components/Login.jsx';
 import MainPage from './Components/MainPage.jsx';
@@ -13,8 +12,21 @@ import { addChannel} from './slices/channelSlice.js';
 import { deleteChannel } from './slices/channelSlice.js';
 import { renameChannel } from './slices/channelSlice.js';
 import ToastContainer from './Components/ToastContainer.jsx';
+import { Provider, ErrorBoundary } from '@rollbar/react'; // Provider imports 'rollbar'
 
-const socket = io()
+
+const socket = io();
+
+const rollbarConfig = {
+  accessToken: '205a775704114435b4f6033ae34594a5',
+  environment: 'testenv',
+};
+
+function TestError() {
+  const a = null;
+  return a.hello();
+}
+
 
 const AuthProvider = ({ children }) => {
 
@@ -62,7 +74,10 @@ socket.on('renameChannel', (channel) => {
 })
 
   return (
+    <Provider config={rollbarConfig}>
+    <ErrorBoundary>
      <AuthProvider>
+     {/* <TestError /> */}
         <div>
           <BrowserRouter>
             <Routes>
@@ -72,11 +87,14 @@ socket.on('renameChannel', (channel) => {
               <Route path="/sighnup" element={<SighnUpPage/>} />              
               <Route path="one" element={<PageOne />} />
               <Route path="two" element={<PageTwo />} />
+
             </Routes>
           </BrowserRouter>
           <ToastContainer/>          
         </div>
       </AuthProvider>
+      </ErrorBoundary>
+    </Provider>
 
   );
 }
