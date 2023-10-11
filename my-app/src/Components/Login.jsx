@@ -27,7 +27,7 @@ function Login() {
   const { t } = useTranslation();
   const [error, setError]= useState(false)
   return (
-    <div>
+    <div className='container'>
       <MyHeader/>
       <h1>{t('Login')}</h1>
 
@@ -48,10 +48,11 @@ function Login() {
             navigate('/');
             return resp.data;
           } catch (err) {
-            console.log(err.message)
-            toast.error(err.message);
+            toast.error('Connection mistake');
+            toast.error(t('wrongUser'));
             if(err.response.status===401){
               setError(true)
+              toast.error(t(err.message))
           }
            return err;
           }
@@ -59,19 +60,23 @@ function Login() {
       >
         {({ errors, touched }) => (
           <Form>
-            <Field className = {errors.nickName&& touched.nickName?'form-control is-invalid':'form-control'} placeholder="Ваш Ник" name="nickName" />
+             <label htmlFor="nickName">{t('nic')}</label>
+            <Field id = 'nickName' className = {errors.nickName&& touched.nickName?'form-control is-invalid':'form-control'} placeholder="Ваш Ник" name="nickName" />
+           
             {errors.nickName && touched.nickName ? (
               <div>{errors.nickName}</div>
             ) : null}
-            <Field className = {errors.pass&& touched.pass?'form-control is-invalid':'form-control'}placeholder="Ваш пароль" name="pass" />
-            {errors.pass && touched.pass ? <div>{errors.pass}</div> : null}
-            <button type="submit">{t('Submit')}</button>
-            {error&&<div>User does not insist</div>}
+
+            <label htmlFor="pass">{t('nic')}</label>
+            <Field  id = 'pass' className = {errors.pass&& touched.pass?'form-control is-invalid':'form-control'}placeholder="Ваш пароль" name="pass" />
+             {errors.pass && touched.pass ? <div>{errors.pass}</div> : null}
+            <button className='submit-btn' type="submit">{t('Submit')}</button>
+            {error&&<div>{t('User does not insist')}</div>}
           </Form>
         )}
       </Formik>
       <p>{t('Have no account yet?')}</p>
-      <button onClick={()=>navigate('/sighnup')}>{t('Sighn up')}</button>
+      <button className='submit-btn' onClick={()=>navigate('/sighnup')}>{t('SighnUp')}</button>
   
 
     </div>

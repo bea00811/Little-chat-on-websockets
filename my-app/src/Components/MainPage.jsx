@@ -21,17 +21,16 @@ import Texts from './Texts';
 import { toast } from 'react-toastify';
 import  filter from 'leo-profanity';
 
-filter.clean('I have boob, etc.');
 filter.loadDictionary('ru');
 const socket = io();
 
 
     i18n.use(initReactI18next) 
    .init({ 
-    lng: "en",
-    fallbackLng: "en",    
+    lng: "ru",
+    fallbackLng: "ru",    
     resources: {
-    en: Texts,   
+    ru: Texts,   
     },
   interpolation: {
   escapeValue: false,
@@ -49,13 +48,20 @@ let currentChannelHere = channelsData.find(item=>item.id === currentChannel)
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+console.log(localStorage.user)
+
+
+
 
   useEffect(() => {
-    if(!loggedIn){
+    if(localStorage.user){
+      setLoggedIn(true);
+      console.log(loggedIn)
+    }
+
+    if(loggedIn === false){
        navigate('/login');
 
-    }else{
-      setLoggedIn(true)
     }
   }, []);
   
@@ -90,7 +96,7 @@ if(loggedIn){
       }
       getChannels();
     } catch (err) {
-      toast.error(err.message);
+      toast.error('Connection mistake');
     }
 
   }

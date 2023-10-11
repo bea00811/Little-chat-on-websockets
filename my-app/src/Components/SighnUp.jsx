@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from './useAuthContext';
-import { useSelector, useDispatch } from 'react-redux';
+import {useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -10,20 +11,7 @@ import { toast } from 'react-toastify';
 
 
 
-const SignupSchema = Yup.object().shape({
-    nickName: Yup.string()
-      .min(3, 'Минимум 2 буквы')
-      .max(20, 'Максимум 50 букв')
-      .required('Обязательное поле'),
-    pass: Yup.string()
-      .min(6, 'Password must be 6 characters long')   
-      .required('Обязательное поле'),
-    confirmPass: Yup.string()
-    .min(6, 'Password must be 6 characters long')
-    .label('confirm password')
-    .required()
-    .oneOf([Yup.ref('pass'), null], 'Passwords must match'),
-  });
+
 
 
 
@@ -32,13 +20,28 @@ const SignupSchema = Yup.object().shape({
  function SighnUpPage(props) {
     let { logIn } = useAuth();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const [error, setError]= useState(false)
 
 
+    const SignupSchema = Yup.object().shape({
+      nickName: Yup.string()
+        .min(3, t('maximum 20 symb min 3'))
+        .max(20, t('maximum 20 symb min 3'))
+        .required(t('required field')),
+      pass: Yup.string()
+        .min(6,  t('Password must be 6 characters long'))   
+        .required(t('required field')),
+      confirmPass: Yup.string()
+      .min(6, t('Password must be 6 characters long'))
+      .label(t('confirmPass'))
+      .required(t('required field'))
+      .oneOf([Yup.ref('pass'), null], t( 'Passwords must match')),
+    });
+
+
     return (
-        <div>
+        <div className='container'>
           <MyHeader/>
           <h1>SighnUp</h1>    
           <Formik
@@ -54,7 +57,6 @@ const SignupSchema = Yup.object().shape({
               const userData = { username: nickName, password: pass};
               try {
                 const resp = await axios.post('/api/v1/signup', userData);
-                console.log(resp.data)
                 const userName = resp.data.username;
                 const token = resp.data.token;
                 logIn(token, userName);
@@ -66,7 +68,7 @@ const SignupSchema = Yup.object().shape({
                 return resp.data;
               } catch (err) {
                 console.log(err.message)
-                toast.error(err.message);
+                toast.error('Connection mistake');
                 console.log(err.response.status)
                 if(err.response.status===409){
                     setError(true)
@@ -77,16 +79,21 @@ const SignupSchema = Yup.object().shape({
           >
             {({ isSubmitting, errors, touched }) => (
               <Form>
-                <Field className = {errors.nickName&& touched.nickName?'form-control is-invalid':'form-control'} placeholder="Ваш Ник" name="nickName" />
+               
+                <label htmlFor="nickName">{t('nic')}</label>
+                <Field id = 'nickName' className = {errors.nickName&& touched.nickName?'form-control is-invalid':'form-control'} placeholder="Ваш Ник" name="nickName" />
                 {errors.nickName && touched.nickName ? (
                   <div>{errors.nickName}</div>
                 ) : null}
-                <Field className = {errors.pass&& touched.pass?'form-control is-invalid':'form-control'} placeholder="Ваш пароль" name="pass" />
+                <label htmlFor="sighnPass">{t('pass')}</label>
+                <Field id ='sighnPass' className = {errors.pass&& touched.pass?'form-control is-invalid':'form-control'} placeholder="Ваш пароль" name="pass" />
                 {errors.pass && touched.pass ? <div>{errors.pass}</div> : null}
-                <Field className = {errors.confirmPass&& touched.confirmPass?'form-control is-invalid':'form-control'} placeholder="Confirm password" name="confirmPass" />
+
+                <label htmlFor="confirmPass">{t('confirmPass')}</label>
+                <Field id = 'confirmPass' className = {errors.confirmPass&& touched.confirmPass?'form-control is-invalid':'form-control'} placeholder="Confirm password" name="confirmPass" />
                 {errors.confirmPass && touched.confirmPass ? <div>{errors.confirmPass}</div> : null}
-                <button type="submit" disabled = {isSubmitting}>Submit</button>
-                {error&&<div>User is already insist</div>}
+                <button type="submit" disabled = {isSubmitting}> {t('register')}</button>
+                {error&&<div>{t('User is already insist')}</div>}
               </Form>
             )}
           </Formik>

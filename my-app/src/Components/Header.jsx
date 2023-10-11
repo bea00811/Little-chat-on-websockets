@@ -9,11 +9,12 @@ export default function MyHeader (props) {
 
  <div className='container '>
   <nav className='shadow-sm navbar navbar-expand-lg navbar-light bg-white d-flex justify-content-between'>
-    <li>
+    <li onClick={console.log('localstorage user'+localStorage.user)}>
     <Link to="/">Chat</Link>
     </li>
    {loggedIn&&<li>{'Hello, '+ JSON.parse(localStorage.user).user+ '!'}</li>} 
-   {loggedIn&&<li><button onClick={()=>{logOut(); navigate('/login')}}>LogOut</button></li>} 
+   {loggedIn&&<li><button onClick={()=>{logOut(); navigate('/login'); 
+   }}>LogOut</button></li>} 
 
   </nav>
  
