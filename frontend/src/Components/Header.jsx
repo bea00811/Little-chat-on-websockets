@@ -7,13 +7,13 @@ export default function MyHeader (props) {
   const navigate = useNavigate();
  return(
 
- <div className='container '>
-  <nav className='shadow-sm navbar navbar-expand-lg navbar-light bg-white d-flex justify-content-between'>
+ <div className='container px-0'>
+  <nav className='px-4 shadow-sm navbar navbar-expand-lg navbar-light bg-white d-flex justify-content-between'>
     <li onClick={console.log('localstorage user'+localStorage.user)}>
-    <Link to="/">Chat</Link>
+    <Link to="/">Hexlet Chat</Link>
     </li>
    {loggedIn&&<li>{'Hello, '+ JSON.parse(localStorage.user).user+ '!'}</li>} 
-   {loggedIn&&<li><button onClick={()=>{logOut(); navigate('/login'); 
+   {loggedIn&&<li><button className='submit-btn' onClick={()=>{logOut(); navigate('/login'); 
    }}>LogOut</button></li>} 
 
   </nav>

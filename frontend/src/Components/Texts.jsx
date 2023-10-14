@@ -15,12 +15,25 @@ export default{
         'confirmPass': 'Подтвердите пароль',
         'Have no account yet?': 'Нет аккаунта?',
         'required field': 'Обязательное поле',
+        'Duplicate':'Должно быть уникальным',
         'Password must be 6 characters long':'Не менее 6 символов',
         'maximum 20 symb min 3': 'От 3 до 20 символов',
+        'Add new channel':'Добавить канал',
+        'Channel name':'Имя канала',
         'User is already insist': 'Такой пользователь уже существует',
         'register':'Зарегистрироваться',
+        'Send msg':'Отправить',
+        'Cancel':'Отменить',
+        'Delete': 'Удалить',
+        'Rename': 'Переименовать',
         'Passwords must match':'Пароли должны совпадать',
         'Connection mistake': 'Connection mistake',
-        'Added new Channel'  : 'Added new Channel2' 
+        'Added new Channel'  : 'Канал создан',
+        'Deleted Channel'  : 'Канал удалён',
+        'Renamed Channel'  : 'Канал переименован',
+        'Delete channel': 'Удалить канал',
+        'Rename channel': 'Переименовать канал',
+        'Renamed Channel': 'Канал переименован',
+        'Are you shure you want delete?': 'Уверены?'
     }
 }

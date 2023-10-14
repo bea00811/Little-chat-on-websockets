@@ -4,24 +4,27 @@ import { io } from 'socket.io-client';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 const socket = io();
 
-const newChannelValid = Yup.object().shape({
-  newChannelName: Yup.string()
-    .min(2, 'Минимум 2 буквы')
-    .max(20, 'Максимум 20 букв')
-    .required('Обязательное поле'),
-});
-
-
 function RenameChannelModal(props) {
+  const { t } = useTranslation();
+  const newChannelValid = (channelsData)=>Yup.object().shape({
+    newChannelName: Yup.string()
+      .min(2, t('maximum 20 symb min 3'))
+      .max(20, t('maximum 20 symb min 3'))
+      .required(t('required field'))
+      .notOneOf(channelsData, t('Duplicate'))
+  });
 
   const currentChannelModal = useSelector((state) => state.modals.currentChannel);
+  const channelsData = useSelector((state) => state.channels.channels);
+  const channelsNames = channelsData.map((item)=>item.name)
 
   return (
     <Modal show={props.showModal} onHide={props.handleClose}>
     <Modal.Header closeButton>
-      <Modal.Title>Rename this channel</Modal.Title>
+      <Modal.Title>{t('Rename channel')}</Modal.Title>
     </Modal.Header>
     <Modal.Body>
     <Formik
@@ -29,37 +32,35 @@ function RenameChannelModal(props) {
     newChannelName: '',
 
   }}
-  validationSchema={newChannelValid}
+  validationSchema={newChannelValid(channelsNames)}
   onSubmit={async (value) => {
-    console.log(JSON.stringify(value, null, 2))
-       if (value.newChannelName !== '') {  
+     if (value.newChannelName !== '') {  
       const valueForSocket = {};
       valueForSocket.id = currentChannelModal
       valueForSocket.name = value.newChannelName 
       socket.emit('renameChannel', valueForSocket);
-      toast('Channel is Renamed');
+      toast(t('Renamed Channel'));
+      props.handleClose()
     }
   }}
 >
   {({ errors, touched }) => (
-  <Form>
-    <label htmlFor="newChannelName">First Name</label>
-    <Field id="newChannelName" name="newChannelName" placeholder="newChannelName" />
+  <Form className="d-flex">
+     <label className="visually-hidden" htmlFor="newChannelName">{t('Channel name')}</label>
+    <Field className={errors.newChannelName && touched.newChannelName?('form-control is-invalid'):('form-control')} id="newChannelName" name="newChannelName" placeholder={t('Channel name')} />
     {errors.newChannelName && touched.newChannelName? (
-          <div>{errors.newChannelName}</div>
+          <div className="invalid-tooltip">{errors.newChannelName}</div>
         ) : null}
-    <button type="submit"onClick={props.handleClose}>Submit</button>
+    <button className="btn btn-primary"  type="submit">{t('Send msg')}</button>
   </Form>
        )}
    </Formik>
     </Modal.Body>
     <Modal.Footer>
       <Button variant="secondary" onClick={props.handleClose}>
-        Close
+      {t('Cancel')}
       </Button>
-      <Button variant="primary" onClick={props.handleClose}>
-        Save Changes
-      </Button>
+     
     </Modal.Footer>
   </Modal>
   );

@@ -9,6 +9,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+form{
+  max-width: 500px;
+  margin: 40px auto;
+  position:relative;
+}
+
 .addChannel{
   float: right;
 }
@@ -38,7 +44,7 @@ li{
   padding: 0 !important;
 }
 .messagesList{
-  min-height: 450px;
+  min-height: 300px;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

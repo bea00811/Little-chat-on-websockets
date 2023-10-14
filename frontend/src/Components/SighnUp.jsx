@@ -43,8 +43,8 @@ import { toast } from 'react-toastify';
     return (
         <div className='container'>
           <MyHeader/>
-          <h1>SighnUp</h1>    
-          <Formik
+          <h1 className='text-center'>{t('SighnUp')}</h1>
+           <Formik
             initialValues={{
               nickName: '',
               pass: '',
@@ -92,7 +92,7 @@ import { toast } from 'react-toastify';
                 <label htmlFor="confirmPass">{t('confirmPass')}</label>
                 <Field id = 'confirmPass' className = {errors.confirmPass&& touched.confirmPass?'form-control is-invalid':'form-control'} placeholder="Confirm password" name="confirmPass" />
                 {errors.confirmPass && touched.confirmPass ? <div>{errors.confirmPass}</div> : null}
-                <button type="submit" disabled = {isSubmitting}> {t('register')}</button>
+                <button className='submit-btn' type="submit" disabled = {isSubmitting}> {t('register')}</button>
                 {error&&<div>{t('User is already insist')}</div>}
               </Form>
             )}

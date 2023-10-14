@@ -12,25 +12,28 @@ import { toast } from 'react-toastify';
 
 
 
-const SignupSchema = Yup.object().shape({
-  nickName: Yup.string()
-    .min(2, 'Минимум 2 буквы')
-    .max(50, 'Максимум 50 букв')
-    .required('Обязательное поле'),
-  pass: Yup.string()
-    .min(4, 'Password must be 8 characters long')
-});
+
 
 function Login() {
-  let { logIn } = useAuth();
-  const navigate = useNavigate();
   const { t } = useTranslation();
+   
+  let { logIn } = useAuth();
+  const navigate = useNavigate(); 
   const [error, setError]= useState(false)
+
+  const SignupSchema = Yup.object().shape({
+    nickName: Yup.string()
+      .min(3, t('maximum 20 symb min 3'))
+      .max(20, t('maximum 20 symb min 3'))
+      .required(t('required field')),
+    pass: Yup.string()
+      .required(t('required field')),
+  });
+
   return (
     <div className='container'>
       <MyHeader/>
-      <h1>{t('Login')}</h1>
-
+      <h1 className='text-center'>{t('Submit')}</h1> 
       <Formik
         initialValues={{
           nickName: '',
@@ -48,10 +51,12 @@ function Login() {
             navigate('/');
             return resp.data;
           } catch (err) {
-             toast.error(t('wrongUser'));
+            
             if(err.response.status===401){
             setError(true)
-            toast.error(t('wrongUser401'))
+            toast.error(t('wrongUser'))
+          }else{
+            toast.error(t('wrongUser'));
           }
            return err;
           }
@@ -66,15 +71,16 @@ function Login() {
               <div>{errors.nickName}</div>
             ) : null}
 
-            <label htmlFor="pass">{t('nic')}</label>
+            <label htmlFor="pass">{t('pass')}</label>
             <Field  id = 'pass' className = {errors.pass&& touched.pass?'form-control is-invalid':'form-control'}placeholder="Ваш пароль" name="pass" />
              {errors.pass && touched.pass ? <div>{errors.pass}</div> : null}
+             {error&&<div className ='is-invalid'>{t('wrongUser')}</div>}
             <button className='submit-btn' type="submit">{t('Submit')}</button>
-            {error&&<div>{t('User does not insist')}</div>}
+            
           </Form>
         )}
       </Formik>
-      <p>{t('Have no account yet?')}</p>
+      <p className='text-center'>{t('Have no account yet?')}</p>
       <button className='submit-btn' onClick={()=>navigate('/sighnup')}>{t('SighnUp')}</button>
   
 

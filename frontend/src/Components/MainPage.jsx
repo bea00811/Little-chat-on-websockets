@@ -53,17 +53,17 @@ console.log(localStorage.user)
 
 
 
-  useEffect(() => {
-    if(localStorage.user){
+   useEffect(() => {
+     if(localStorage.user){
       setLoggedIn(true);
       console.log(loggedIn)
     }
 
-    if(loggedIn === false){
-       navigate('/login');
+     if(loggedIn === false){
+        navigate('/login');
 
-    }
-  }, []);
+     }
+   }, []);
   
   const [showModal, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -79,17 +79,15 @@ console.log(localStorage.user)
 
 
  useEffect(() => {
-if(loggedIn){
+ if(loggedIn){
     try {
       async function getChannels() {
         const token = JSON.parse(localStorage.user).userToken;
-        alert('before responce')
-        const serverDataLogUser = await axios.get('/api/v1/data', {
+           const serverDataLogUser = await axios.get('/api/v1/data', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        alert('wow responce done!')
         dispatch(getAllChannels(serverDataLogUser.data.channels));
         dispatch(getAllMessages(serverDataLogUser.data.messages));
 
@@ -99,7 +97,7 @@ if(loggedIn){
       toast.error('Connection mistake');
     }
 
-  }
+   }
   }, []);
 
 
@@ -128,14 +126,12 @@ const renameCurrentChannel = (e)=>{
 }
   const SignupSchema = Yup.object().shape({
     message: Yup.string()
-      .min(2, 'Минимум 2 буквы')
-      .max(500, 'Максимум 50 букв')
-      .required('Обязательное поле'),
+     .required('Обязательное поле'),
   });
 
  
   return (
-    <div className="container my-4 overflow-hidden h-100 shadow rounded">
+    <div className="container h-100 my-4 overflow-hidden h-100 shadow rounded">
       <MyHeader navigate = {navigate}/>
       
         
@@ -156,8 +152,8 @@ const renameCurrentChannel = (e)=>{
                       <Dropdown>
                       <Dropdown.Toggle id="dropdown-basic"></Dropdown.Toggle>
                       <Dropdown.Menu>
-                        <Dropdown.Item onClick = {deleteCurrentChannel} >{t('Delete Channel')}</Dropdown.Item>
-                        <Dropdown.Item onClick = {renameCurrentChannel } >{t('Rename Channel')}</Dropdown.Item>
+                        <Dropdown.Item onClick = {deleteCurrentChannel} >{t('Delete')}</Dropdown.Item>
+                        <Dropdown.Item onClick = {renameCurrentChannel } >{t('Rename')}</Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
                   </div>
@@ -174,7 +170,7 @@ const renameCurrentChannel = (e)=>{
 
      </div>
 
-     <div className='title-container col border-end pl-4 bg-white'> 
+     <div className='title-container h-100 col border-end pl-4 bg-white'> 
      <div className='page-name-container bg-light shadow-sm'>
        <h5 className='text-secondary'>{t('MainPage')}</h5>
        <h6>#<strong>{currentChannelHere&&currentChannelHere.name}</strong></h6> 
@@ -207,14 +203,14 @@ const renameCurrentChannel = (e)=>{
             }}
           >
             {({ errors, touched }) => (
-              <Form>
-                <Field placeholder="Ваше сообщение" name="message" />
-                {errors.message && touched.message ? (<div>{errors.message}</div>) : null}
-                <button type="submit">{t('Submit')}</button>
+              <Form className='d-flex'>
+                <Field className={errors.message && touched.message?('form-control is-invalid'):('form-control')} placeholder="Ваше сообщение" name="message" />
+                {errors.message && touched.message ? (<div className="invalid-tooltip">{errors.message}</div>) : null}
+                <button type="submit">{t('Send msg')}</button>
               </Form>
             )}
           </Formik>
-        <AddChannelModal showModal = {showModal} handleClose = {handleClose}/>
+        <AddChannelModal showModal = {showModal} handleClose = {handleClose} handleShow = {handleShow}/>
         <DeleteChannelModal showDeleteChannelModal = {showDeleteChannelModal} handleCloseDeleteChannelModal = {handleCloseDeleteChannelModal}/>
         <RenameChannelModal showModal = {showRenameChannelModal} handleClose = {handleCloseRenameChannelModal}/>
         </div>
