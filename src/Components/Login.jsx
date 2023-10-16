@@ -81,7 +81,7 @@ function Login() {
         )}
       </Formik>
       <p className='text-center'>{t('Have no account yet?')}</p>
-      <button className='submit-btn' onClick={()=>navigate('/sighnup')}>{t('SighnUp')}</button>
+      <button className='submit-btn' onClick={()=>navigate('/signup')}>{t('SighnUp')}</button>
   
 
     </div>

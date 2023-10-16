@@ -179,7 +179,10 @@ const renameCurrentChannel = (e)=>{
      <div className = 'messagesContainer'>
         <ul className='messagesList'>
         {filtered.map((item)=>
-        <li key={item.id}>{item.message}<span>{item.msgId}</span></li>
+        
+       { 
+        console.log(item)
+        return  <li key={item.id}><strong>{JSON.parse(localStorage.user).user}: </strong>{item.message}</li>}
        )}
        </ul>
 
