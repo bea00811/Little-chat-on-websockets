@@ -182,7 +182,7 @@ const renameCurrentChannel = (e)=>{
         
        { 
         console.log(item)
-        return  <li key={item.id}><strong>{JSON.parse(localStorage.user).user}: </strong>{item.message}</li>}
+        return  <li key={item.id}>{item.message}</li>}
        )}
        </ul>
 

@@ -71,7 +71,8 @@ function Login() {
             <label htmlFor="pass">{t('pass')}</label>
             <Field  id = 'pass' type='password' className = {errors.pass&& touched.pass?'form-control is-invalid':'form-control'}placeholder="Ваш пароль" name="pass" />
              {errors.pass && touched.pass ? <div>{errors.pass}</div> : null}
-             {error&&<div className ='is-invalid'>{t('wrongUser')}</div>}
+             {error&&<div className ='err'>{t('wrongUser')}</div>}
+             {error&&<p >{t('wrongUser')}</p>}
             <button className='submit-btn' type="submit">{t('Submit')}</button>
             
           </Form>
