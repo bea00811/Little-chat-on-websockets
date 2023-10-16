@@ -51,14 +51,8 @@ function Login() {
             navigate('/');
             return resp.data;
           } catch (err) {
-            
-            if(err.response.status===401){
             setError(true)
-            toast.error(t('wrongUser'))
-          }else{
-       
-          }
-           return err;
+            return err;
           }
         }}
       >
