@@ -51,8 +51,11 @@ function Login() {
             navigate('/');
             return resp.data;
           } catch (err) {
+            
+            if(err.response.status===401){
             setError(true)
-            return err;
+            }
+           return err;
           }
         }}
       >
