@@ -24,8 +24,8 @@ import  filter from 'leo-profanity';
 filter.loadDictionary('ru');
 const socket = io();
 
-
-    i18n.use(initReactI18next) 
+const i18nextInstance = i18n.createInstance();
+i18nextInstance.use(initReactI18next) 
    .init({ 
     lng: "ru",
     fallbackLng: "ru",    
