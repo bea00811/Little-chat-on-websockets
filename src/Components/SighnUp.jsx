@@ -86,11 +86,11 @@ import { toast } from 'react-toastify';
                   <div>{errors.nickName}</div>
                 ) : null}
                 <label htmlFor="sighnPass">{t('pass')}</label>
-                <Field id ='sighnPass' className = {errors.pass&& touched.pass?'form-control is-invalid':'form-control'} placeholder={t('pass')} name="pass" />
+                <Field id ='sighnPass' type='password' className = {errors.pass&& touched.pass?'form-control is-invalid':'form-control'} placeholder={t('pass')} name="pass" />
                 {errors.pass && touched.pass ? <div>{errors.pass}</div> : null}
 
                 <label htmlFor="confirmPass">{t('confirmPass')}</label>
-                <Field id = 'confirmPass' className = {errors.confirmPass&& touched.confirmPass?'form-control is-invalid':'form-control'} placeholder={t('confirmPass')} name="confirmPass" />
+                <Field id = 'confirmPass' type='password' className = {errors.confirmPass&& touched.confirmPass?'form-control is-invalid':'form-control'} placeholder={t('confirmPass')} name="confirmPass" />
                 {errors.confirmPass && touched.confirmPass ? <div>{errors.confirmPass}</div> : null}
                 <button className='submit-btn' type="submit" disabled = {isSubmitting}> {t('register')}</button>
                 {error&&<div>{t('User is already insist')}</div>}
