@@ -54,9 +54,9 @@ function Login() {
             
             if(err.response.status===401){
             setError(true)
-       
+            toast.error(t('wrongUser'))
           }else{
-    
+       
           }
            return err;
           }
