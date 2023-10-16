@@ -1,0 +1,66 @@
+
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+form{
+  max-width: 500px;
+  margin: 40px auto;
+  position:relative;
+}
+
+.addChannel{
+  float: right;
+}
+.submit-btn {
+
+  margin: 20px auto;
+  display: block;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  background: darkblue;
+  border-radius: 5px;
+
+}
+
+li{
+  list-style-type: none;
+  margin: 5px 0;
+}
+
+.page-name-container{
+  padding-left: 30px;
+  padding-top: 20px;
+}
+
+.title-container{
+  padding: 0 !important;
+}
+.messagesList{
+  min-height: 300px;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+.channelsList{
+  padding-left: 0;
+}
+.channelsList li{
+
+  font-weight: 900;
+  display: flex;
+  width: 100%;
+}
+
+.messagesList li{
+  list-style-type: none;
+
+}
