@@ -6,9 +6,23 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './slices/configureStore.js';
+import i18n from "i18next";
+import Texts from './Components/Texts';
 
+import {initReactI18next } from "react-i18next";
 
-
+const i18nextInstance = i18n.createInstance();
+i18nextInstance.use(initReactI18next) 
+   .init({ 
+    lng: "ru",
+    fallbackLng: "ru",    
+    resources: {
+    ru: Texts,   
+    },
+  interpolation: {
+  escapeValue: false,
+    }
+    });
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
