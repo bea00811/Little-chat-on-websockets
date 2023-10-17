@@ -33,7 +33,7 @@ function DeleteChannelModal(props) {
       <Button variant="secondary" onClick={props.handleCloseDeleteChannelModal}>
       {t('Cancel')}
       </Button>
-      <Button variant="primary" onClick={()=>deleteChannelHere(currentChannelModal)}>
+      <Button variant="danger" onClick={()=>deleteChannelHere(currentChannelModal)}>
       {t('Delete')}
       </Button>
     </Modal.Footer>
