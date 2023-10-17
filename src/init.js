@@ -1,6 +1,7 @@
 import Texts from './Components/Texts';
 import i18n from "i18next";
 import {initReactI18next } from "react-i18next";
+import App from './App';
 
 
 
@@ -17,4 +18,8 @@ i18nextInstance.use(initReactI18next)
   interpolation: {
   escapeValue: false,
     }
-    })};
+    })
+  
+  return <App/>
+  
+  };

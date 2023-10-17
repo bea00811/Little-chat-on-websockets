@@ -31,13 +31,13 @@ const socket = io();
     const { t } = useTranslation();
     const { loggedIn, setLoggedIn} = useAuth();
     const channelsData = useSelector((state) => state.channels.channels);
-const currentChannel = useSelector((state) => state.channels.currentChannel);
-const messagesData = useSelector((state) => state.messages.messages);
-let currentChannelHere = channelsData.find(item=>item.id === currentChannel)
+    const currentChannel = useSelector((state) => state.channels.currentChannel);
+    const messagesData = useSelector((state) => state.messages.messages);
+    let currentChannelHere = channelsData.find(item=>item.id === currentChannel)
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-console.log(localStorage.user)
+  console.log(localStorage.user)
 
 
 

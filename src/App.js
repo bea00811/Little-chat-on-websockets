@@ -13,9 +13,9 @@ import { deleteChannel } from './slices/channelSlice.js';
 import { renameChannel } from './slices/channelSlice.js';
 import ToastContainer from './Components/ToastContainer.jsx';
 import { Provider, ErrorBoundary } from '@rollbar/react'; // Provider imports 'rollbar'
-import Init from './init.js';
 
-Init();
+
+
 const socket = io();
 
 const rollbarConfig = {
