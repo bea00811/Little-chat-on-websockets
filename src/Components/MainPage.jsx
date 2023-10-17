@@ -196,7 +196,7 @@ const renameCurrentChannel = (e)=>{
           >
             {({ errors, touched }) => (
               <Form className='d-flex'>
-                <Field className={errors.message && touched.message?('form-control is-invalid'):('form-control')} placeholder="Ваше сообщение" name="message" />
+                <Field aria-label = 'Новое сообщение' className={errors.message && touched.message?('form-control is-invalid'):('form-control')} placeholder="Ваше сообщение" name="message" />
                 {errors.message && touched.message ? (<div className="invalid-tooltip">{errors.message}</div>) : null}
                 <button type="submit">{t('Send msg')}</button>
               </Form>
