@@ -122,7 +122,7 @@ const renameCurrentChannel = (e)=>{
       <div className = 'channelsContainer p-2'>
       <Button className='addChannel' variant="primary" onClick={handleShow}>
       {t('Add new channel button')}
-      </Button>
+        </Button>
           <ul className='channelsList'>
             {channelsData &&
               channelsData.map((item) =>  {
@@ -132,7 +132,9 @@ const renameCurrentChannel = (e)=>{
                  </button>
                  <div>
                       <Dropdown>
-                      <Dropdown.Toggle id="dropdown-basic"></Dropdown.Toggle>
+                      <Dropdown.Toggle id="dropdown-basic">
+                      <span className='visually-hidden'>Управление каналом</span>
+                      </Dropdown.Toggle>
                       <Dropdown.Menu>
                         <Dropdown.Item onClick = {deleteCurrentChannel} >{t('Delete')}</Dropdown.Item>
                         <Dropdown.Item onClick = {renameCurrentChannel } >{t('Rename')}</Dropdown.Item>
