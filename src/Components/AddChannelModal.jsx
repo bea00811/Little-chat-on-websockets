@@ -17,7 +17,7 @@ function AddChannelModal(props) {
 
   const newChannelValid =(channelsData)=> Yup.object().shape({
     newChannelName: Yup.string()
-      .min(2, t('maximum 20 symb min 3'))
+      .min(3, t('maximum 20 symb min 3'))
       .max(20, t('maximum 20 symb min 3'))
       .required(t('required field'))
       .notOneOf(channelsData, t('Duplicate'))
