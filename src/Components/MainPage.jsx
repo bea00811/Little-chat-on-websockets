@@ -15,16 +15,12 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { io } from 'socket.io-client';
 import MyHeader from './Header';
-import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
-import Texts from './Texts';
 import { toast } from 'react-toastify';
 import  filter from 'leo-profanity';
 
-filter.loadDictionary('ru');
+filter.add(filter.getDictionary('ru'))
 const socket = io();
-
-
 
 
   export default function MainPage(props) {
@@ -37,9 +33,6 @@ const socket = io();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log(localStorage.user)
-
-
 
 
    useEffect(() => {
