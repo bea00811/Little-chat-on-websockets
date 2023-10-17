@@ -1,7 +1,7 @@
 server:
-	npx start-server s  ./my-app/build
+	npx start-server s  ./build
 start:
-	npm start 
+	npx start-server s  ./build && npm start 
 install:
 	npm i
 
