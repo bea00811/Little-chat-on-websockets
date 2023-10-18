@@ -11,7 +11,7 @@ import { io } from 'socket.io-client';
 import { addChannel } from './slices/channelSlice.js';
 import { deleteChannel } from './slices/channelSlice.js';
 import { renameChannel } from './slices/channelSlice.js';
-import Toast from './Components/Toast.jsx';
+import ToastContainer from './Components/ToastContainer.jsx';
 import { Provider, ErrorBoundary } from '@rollbar/react'; // Provider imports 'rollbar'
 
 const socket = io();
@@ -81,7 +81,7 @@ function App() {
                 <Route path="two" element={<PageTwo />} />
               </Routes>
             </BrowserRouter>
-            <Toast />
+            <ToastContainer />
           </div>
         </AuthProvider>
       </ErrorBoundary>
