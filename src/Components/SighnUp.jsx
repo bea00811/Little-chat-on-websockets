@@ -41,7 +41,7 @@ function SighnUpPage() {
         }}
         validationSchema={SignupSchema}
         onSubmit={async (values) => {
-          const { nickName, pass } = values;
+          let { nickName, pass } = values;
           const userData = { username: nickName, password: pass };
           try {
             const resp = await axios.post('/api/v1/signup', userData);
@@ -49,9 +49,8 @@ function SighnUpPage() {
             const { token } = resp.data;
             logIn(token, userName);
             navigate('/');
-            values.nickName = '';
-            values.pass = '';
-            values.confirmPass = '';
+            nickName = '';
+            pass = '';
 
             return resp.data;
           } catch (err) {
