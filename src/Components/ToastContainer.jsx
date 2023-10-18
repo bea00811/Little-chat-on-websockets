@@ -1,12 +1,10 @@
-
-import { ToastContainer} from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 export default function () {
-     return(
-     <div>
-        <ToastContainer
+  return (
+    <div>
+      <ToastContainer
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}
@@ -17,9 +15,7 @@ export default function () {
         draggable
         pauseOnHover
         theme="light"
-        />
-     </div>
-  
-   )
-  
-  };
+      />
+    </div>
+  );
+}

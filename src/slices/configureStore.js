@@ -7,6 +7,6 @@ export default configureStore({
   reducer: {
     channels: getAllChannels,
     messages: getAllMessages,
-    modals:  getAllModals,
+    modals: getAllModals,
   },
 });
