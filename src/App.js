@@ -68,17 +68,17 @@ function App() {
           <div>
             <BrowserRouter>
               <Routes>
-                <Route path='*' element={<ErrorPage />} />
+                <Route path="*" element={<ErrorPage />} />
                 <Route
-                  path='/'
+                  path="/"
                   element={
-                    <MainPage name='Props Header' surname='Props SubHeader' />
+                    <MainPage name="Props Header" surname="Props SubHeader" />
                   }
                 />
-                <Route path='/login' element={<Login />} />
-                <Route path='/signup' element={<SighnUpPage />} />
-                <Route path='one' element={<PageOne />} />
-                <Route path='two' element={<PageTwo />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SighnUpPage />} />
+                <Route path="one" element={<PageOne />} />
+                <Route path="two" element={<PageTwo />} />
               </Routes>
             </BrowserRouter>
             <ToastContainer />

@@ -1,25 +1,25 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "react-bootstrap";
-import Dropdown from "react-bootstrap/Dropdown";
-import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
-import { Formik, Form, Field } from "formik";
-import * as Yup from "yup";
-import { io } from "socket.io-client";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
-import filter from "leo-profanity";
-import MyHeader from "./Header";
-import { getCurrentChannel } from "../slices/modalSlice";
-import { getAllMessages } from "../slices/messagesSlice";
-import { getAllChannels, changeChannel } from "../slices/channelSlice";
-import useAuth from "./useAuthContext";
-import RenameChannelModal from "./RenameChannelModal";
-import DeleteChannelModal from "./DeleteChannelModal";
-import AddChannelModal from "./AddChannelModal";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import Dropdown from 'react-bootstrap/Dropdown';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+import { io } from 'socket.io-client';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import filter from 'leo-profanity';
+import MyHeader from './Header';
+import { getCurrentChannel } from '../slices/modalSlice';
+import { getAllMessages } from '../slices/messagesSlice';
+import { getAllChannels, changeChannel } from '../slices/channelSlice';
+import useAuth from './useAuthContext';
+import RenameChannelModal from './RenameChannelModal';
+import DeleteChannelModal from './DeleteChannelModal';
+import AddChannelModal from './AddChannelModal';
 
-filter.add(filter.getDictionary("ru"));
+filter.add(filter.getDictionary('ru'));
 const socket = io();
 
 export default function MainPage() {
@@ -41,7 +41,7 @@ export default function MainPage() {
     }
 
     if (loggedIn === false) {
-      navigate("/login");
+      navigate('/login');
     }
   }, []);
 
@@ -58,7 +58,7 @@ export default function MainPage() {
   const handleShowRenameChannelModal = () => setShowRenameChannelModal(true);
   async function getChannels() {
     const token = JSON.parse(localStorage.user).userToken;
-    const serverDataLogUser = await axios.get("/api/v1/data", {
+    const serverDataLogUser = await axios.get('/api/v1/data', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -71,13 +71,13 @@ export default function MainPage() {
       try {
         getChannels();
       } catch (err) {
-        toast.error("Connection mistake");
+        toast.error('Connection mistake');
       }
     }
   }, []);
 
   let filtered = [];
-  if (typeof currentChannelHere === "undefined") {
+  if (typeof currentChannelHere === 'undefined') {
     filtered = messagesData.filter((item) => item.msgId === 1);
     currentChannelHere = channelsData.find((item) => item.id === 1);
   } else {
@@ -87,18 +87,18 @@ export default function MainPage() {
   }
 
   const deleteCurrentChannel = (e) => {
-    const { id } = e.target.closest(".channelLi").dataset;
+    const { id } = e.target.closest('.channelLi').dataset;
     handleShowDeleteChannelModal();
     dispatch(getCurrentChannel(id));
   };
 
   const renameCurrentChannel = (e) => {
     handleShowRenameChannelModal();
-    const { id } = e.target.closest(".channelLi").dataset;
+    const { id } = e.target.closest('.channelLi').dataset;
     dispatch(getCurrentChannel(id));
   };
   const SignupSchema = Yup.object().shape({
-    message: Yup.string().required("Обязательное поле"),
+    message: Yup.string().required('Обязательное поле'),
   });
 
   return (
@@ -113,7 +113,7 @@ export default function MainPage() {
               variant="primary"
               onClick={handleShow}
             >
-              {t("Add new channel button")}
+              {t('Add new channel button')}
             </Button>
             <ul className="channelsList">
               {channelsData &&
@@ -136,10 +136,10 @@ export default function MainPage() {
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
                             <Dropdown.Item onClick={deleteCurrentChannel}>
-                              {t("Delete")}
+                              {t('Delete')}
                             </Dropdown.Item>
                             <Dropdown.Item onClick={renameCurrentChannel}>
-                              {t("Rename")}
+                              {t('Rename')}
                             </Dropdown.Item>
                           </Dropdown.Menu>
                         </Dropdown>
@@ -163,7 +163,7 @@ export default function MainPage() {
 
         <div className="title-container h-100 col border-end pl-4 bg-white">
           <div className="page-name-container bg-light shadow-sm">
-            <h5 className="text-secondary">{t("MainPage")}</h5>
+            <h5 className="text-secondary">{t('MainPage')}</h5>
             <h6>
               #<strong>{currentChannelHere && currentChannelHere.name}</strong>
             </h6>
@@ -182,7 +182,7 @@ export default function MainPage() {
             <div className="form-wrapper">
               <Formik
                 initialValues={{
-                  message: "",
+                  message: '',
                 }}
                 validationSchema={SignupSchema}
                 onSubmit={async (value, { setSubmitting }) => {
@@ -192,10 +192,10 @@ export default function MainPage() {
                     msgId: currentChannelHere ? currentChannelHere.id : null,
                   };
 
-                  if (value.message !== "") {
-                    socket.emit("newMessage", newValueMsg);
+                  if (value.message !== '') {
+                    socket.emit('newMessage', newValueMsg);
                   }
-                  value.message = "";
+                  value.message = '';
                 }}
               >
                 {({ errors, touched }) => (
@@ -204,8 +204,8 @@ export default function MainPage() {
                       aria-label="Новое сообщение"
                       className={
                         errors.message && touched.message
-                          ? "form-control is-invalid"
-                          : "form-control"
+                          ? 'form-control is-invalid'
+                          : 'form-control'
                       }
                       placeholder="Ваше сообщение"
                       name="message"
@@ -213,7 +213,7 @@ export default function MainPage() {
                     {errors.message && touched.message ? (
                       <div className="invalid-tooltip">{errors.message}</div>
                     ) : null}
-                    <button type="submit">{t("Send msg")}</button>
+                    <button type="submit">{t('Send msg')}</button>
                   </Form>
                 )}
               </Formik>

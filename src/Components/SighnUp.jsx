@@ -30,9 +30,9 @@ function SighnUpPage() {
   });
 
   return (
-    <div className='container'>
+    <div className="container">
       <MyHeader />
-      <h1 className='text-center'>{t('SighnUp')}</h1>
+      <h1 className="text-center">{t('SighnUp')}</h1>
       <Formik
         initialValues={{
           nickName: '',
@@ -65,52 +65,52 @@ function SighnUpPage() {
       >
         {({ isSubmitting, errors, touched }) => (
           <Form>
-            <label htmlFor='nickName'>{t('regName')}</label>
+            <label htmlFor="nickName">{t('regName')}</label>
             <Field
-              id='nickName'
+              id="nickName"
               className={
                 errors.nickName && touched.nickName
                   ? 'form-control is-invalid'
                   : 'form-control'
               }
               placeholder={t('regName')}
-              name='nickName'
+              name="nickName"
             />
             {errors.nickName && touched.nickName ? (
               <div>{errors.nickName}</div>
             ) : null}
-            <label htmlFor='sighnPass'>{t('pass')}</label>
+            <label htmlFor="sighnPass">{t('pass')}</label>
             <Field
-              id='sighnPass'
-              type='password'
+              id="sighnPass"
+              type="password"
               className={
                 errors.pass && touched.pass
                   ? 'form-control is-invalid'
                   : 'form-control'
               }
               placeholder={t('pass')}
-              name='pass'
+              name="pass"
             />
             {errors.pass && touched.pass ? <div>{errors.pass}</div> : null}
 
-            <label htmlFor='confirmPass'>{t('confirmPass')}</label>
+            <label htmlFor="confirmPass">{t('confirmPass')}</label>
             <Field
-              id='confirmPass'
-              type='password'
+              id="confirmPass"
+              type="password"
               className={
                 errors.confirmPass && touched.confirmPass
                   ? 'form-control is-invalid'
                   : 'form-control'
               }
               placeholder={t('confirmPass')}
-              name='confirmPass'
+              name="confirmPass"
             />
             {errors.confirmPass && touched.confirmPass ? (
               <div>{errors.confirmPass}</div>
             ) : null}
             <button
-              className='submit-btn'
-              type='submit'
+              className="submit-btn"
+              type="submit"
               disabled={isSubmitting}
             >
               {' '}

@@ -47,8 +47,8 @@ function RenameChannelModal(props) {
           }}
         >
           {({ errors, touched }) => (
-            <Form className='d-flex'>
-              <label className='visually-hidden' htmlFor='newChannelName'>
+            <Form className="d-flex">
+              <label className="visually-hidden" htmlFor="newChannelName">
                 {t('Channel name')}
               </label>
               <Field
@@ -57,14 +57,14 @@ function RenameChannelModal(props) {
                     ? 'form-control is-invalid'
                     : 'form-control'
                 }
-                id='newChannelName'
-                name='newChannelName'
+                id="newChannelName"
+                name="newChannelName"
                 placeholder={t('Channel name')}
               />
               {errors.newChannelName && touched.newChannelName ? (
-                <div className='invalid-tooltip'>{errors.newChannelName}</div>
+                <div className="invalid-tooltip">{errors.newChannelName}</div>
               ) : null}
-              <button className='btn btn-primary' type='submit'>
+              <button className="btn btn-primary" type="submit">
                 {t('Send msg')}
               </button>
             </Form>
@@ -72,7 +72,7 @@ function RenameChannelModal(props) {
         </Formik>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant='secondary' onClick={props.handleClose}>
+        <Button variant="secondary" onClick={props.handleClose}>
           {t('Cancel')}
         </Button>
       </Modal.Footer>

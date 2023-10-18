@@ -23,9 +23,9 @@ function Login() {
   });
 
   return (
-    <div className='container'>
+    <div className="container">
       <MyHeader />
-      <h1 className='text-center'>{t('Submit')}</h1>
+      <h1 className="text-center">{t('Submit')}</h1>
       <Formik
         initialValues={{
           nickName: '',
@@ -52,45 +52,45 @@ function Login() {
       >
         {({ errors, touched }) => (
           <Form>
-            <label htmlFor='nickName'>{t('nic')}</label>
+            <label htmlFor="nickName">{t('nic')}</label>
             <Field
-              id='nickName'
+              id="nickName"
               className={
                 errors.nickName && touched.nickName
                   ? 'form-control is-invalid'
                   : 'form-control'
               }
-              placeholder='Ваш Ник'
-              name='nickName'
+              placeholder="Ваш Ник"
+              name="nickName"
             />
 
             {errors.nickName && touched.nickName ? (
               <div>{errors.nickName}</div>
             ) : null}
 
-            <label htmlFor='pass'>{t('pass')}</label>
+            <label htmlFor="pass">{t('pass')}</label>
             <Field
-              id='pass'
-              type='password'
+              id="pass"
+              type="password"
               className={
                 errors.pass && touched.pass
                   ? 'form-control is-invalid'
                   : 'form-control'
               }
-              placeholder='Ваш пароль'
-              name='pass'
+              placeholder="Ваш пароль"
+              name="pass"
             />
             {errors.pass && touched.pass ? <div>{errors.pass}</div> : null}
-            {error && <div className='err'>{t('wrongUser')}</div>}
+            {error && <div className="err">{t('wrongUser')}</div>}
 
-            <button className='submit-btn' type='submit'>
+            <button className="submit-btn" type="submit">
               {t('Submit')}
             </button>
           </Form>
         )}
       </Formik>
-      <p className='text-center'>{t('Have no account yet?')}</p>
-      <button className='submit-btn' onClick={() => navigate('/signup')}>
+      <p className="text-center">{t('Have no account yet?')}</p>
+      <button className="submit-btn" onClick={() => navigate('/signup')}>
         {t('SighnUp')}
       </button>
     </div>

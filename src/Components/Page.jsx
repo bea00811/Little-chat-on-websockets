@@ -7,10 +7,10 @@ const BuildPage = (index) => (
     <nav>
       <ul>
         <li>
-          <Link to='/one'>Page One</Link>
+          <Link to="/one">Page One</Link>
         </li>
         <li>
-          <Link to='/two'>Page Two</Link>
+          <Link to="/two">Page Two</Link>
         </li>
       </ul>
     </nav>

@@ -8,10 +8,10 @@ export default function MyHeader(props) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   return (
-    <div className='container px-0'>
-      <nav className='px-4 shadow-sm navbar navbar-expand-lg navbar-light bg-white d-flex justify-content-between'>
+    <div className="container px-0">
+      <nav className="px-4 shadow-sm navbar navbar-expand-lg navbar-light bg-white d-flex justify-content-between">
         <li>
-          <Link to='/'>Hexlet Chat</Link>
+          <Link to="/">Hexlet Chat</Link>
         </li>
         {loggedIn && (
           <li>{'Hello, ' + JSON.parse(localStorage.user).user + '!'}</li>
@@ -19,7 +19,7 @@ export default function MyHeader(props) {
         {loggedIn && (
           <li>
             <button
-              className='submit-btn'
+              className="submit-btn"
               onClick={() => {
                 logOut();
                 navigate('/login');
