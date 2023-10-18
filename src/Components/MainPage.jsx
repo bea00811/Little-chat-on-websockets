@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
-import AddChannelModal from './AddChannelModal';
-import DeleteChannelModal from './DeleteChannelModal';
-import RenameChannelModal from './RenameChannelModal';
 import Dropdown from 'react-bootstrap/Dropdown';
-import useAuth from './useAuthContext';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllChannels, changeChannel } from '../slices/channelSlice.js';
-import { getAllMessages } from '../slices/messagesSlice.js';
-import { getCurrentChannel } from '../slices/modalSlice';
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { io } from 'socket.io-client';
-import MyHeader from './Header';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import filter from 'leo-profanity';
+import MyHeader from './Header';
+import { getCurrentChannel } from '../slices/modalSlice';
+import { getAllMessages } from '../slices/messagesSlice.js';
+import { getAllChannels, changeChannel } from '../slices/channelSlice.js';
+import useAuth from './useAuthContext';
+import RenameChannelModal from './RenameChannelModal';
+import DeleteChannelModal from './DeleteChannelModal';
+import AddChannelModal from './AddChannelModal';
 
 filter.add(filter.getDictionary('ru'));
 const socket = io();
@@ -90,14 +90,14 @@ export default function MainPage() {
   }
 
   const deleteCurrentChannel = (e) => {
-    const id = e.target.closest('.channelLi').dataset.id;
+    const { id } = e.target.closest('.channelLi').dataset;
     handleShowDeleteChannelModal();
     dispatch(getCurrentChannel(id));
   };
 
   const renameCurrentChannel = (e) => {
     handleShowRenameChannelModal();
-    const id = e.target.closest('.channelLi').dataset.id;
+    const { id } = e.target.closest('.channelLi').dataset;
     dispatch(getCurrentChannel(id));
   };
   const SignupSchema = Yup.object().shape({
@@ -119,47 +119,51 @@ export default function MainPage() {
               {t('Add new channel button')}
             </Button>
             <ul className="channelsList">
-              {channelsData &&
-                channelsData.map((item) => {
-                  return item.removable ? (
-                    <li className="channelLi" key={item.id} data-id={item.id}>
-                      <button
-                        onClick={() => dispatch(changeChannel(item))}
-                        type="button"
-                        className="w-100 rounded-0 text-start btn btn-secondary"
-                      >
-                        <span>#{item.name}</span>
-                      </button>
-                      <div>
-                        <Dropdown>
-                          <Dropdown.Toggle id="dropdown-basic">
-                            <span className="visually-hidden">
-                              Управление каналом
-                            </span>
-                          </Dropdown.Toggle>
-                          <Dropdown.Menu>
-                            <Dropdown.Item onClick={deleteCurrentChannel}>
-                              {t('Delete')}
-                            </Dropdown.Item>
-                            <Dropdown.Item onClick={renameCurrentChannel}>
-                              {t('Rename')}
-                            </Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown>
-                      </div>
-                    </li>
-                  ) : (
-                    <li key={item.id} data-id={item.id}>
-                      <button
-                        onClick={() => dispatch(changeChannel(item))}
-                        type="button"
-                        className="w-100 rounded-0 text-start btn btn-secondary"
-                      >
-                        <span>#{item.name}</span>
-                      </button>
-                    </li>
-                  );
-                })}
+              {channelsData
+                && channelsData.map((item) => (item.removable ? (
+                  <li className="channelLi" key={item.id} data-id={item.id}>
+                    <button
+                      onClick={() => dispatch(changeChannel(item))}
+                      type="button"
+                      className="w-100 rounded-0 text-start btn btn-secondary"
+                    >
+                      <span>
+                        #
+                        {item.name}
+                      </span>
+                    </button>
+                    <div>
+                      <Dropdown>
+                        <Dropdown.Toggle id="dropdown-basic">
+                          <span className="visually-hidden">
+                            Управление каналом
+                          </span>
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          <Dropdown.Item onClick={deleteCurrentChannel}>
+                            {t('Delete')}
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={renameCurrentChannel}>
+                            {t('Rename')}
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </div>
+                  </li>
+                ) : (
+                  <li key={item.id} data-id={item.id}>
+                    <button
+                      onClick={() => dispatch(changeChannel(item))}
+                      type="button"
+                      className="w-100 rounded-0 text-start btn btn-secondary"
+                    >
+                      <span>
+                        #
+                        {item.name}
+                      </span>
+                    </button>
+                  </li>
+                )))}
             </ul>
           </div>
         </div>
@@ -168,10 +172,12 @@ export default function MainPage() {
           <div className="page-name-container bg-light shadow-sm">
             <h5 className="text-secondary">{t('MainPage')}</h5>
             <h6>
-              #<strong>{currentChannelHere && currentChannelHere.name}</strong>
+              #
+              <strong>{currentChannelHere && currentChannelHere.name}</strong>
             </h6>
             <p className="text-muted">
-              id:{currentChannelHere && currentChannelHere.id}
+              id:
+              {currentChannelHere && currentChannelHere.id}
             </p>
           </div>
           <div className="messagesContainer">

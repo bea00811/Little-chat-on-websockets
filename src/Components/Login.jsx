@@ -48,8 +48,7 @@ function Login() {
             }
             return err;
           }
-        }}
-      >
+        }}>
         {({ errors, touched }) => (
           <Form>
             <label htmlFor="nickName">{t('nic')}</label>

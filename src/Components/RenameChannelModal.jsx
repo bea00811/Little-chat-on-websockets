@@ -5,18 +5,18 @@ import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+
 const socket = io();
 
-function RenameChannelModal(props) {
+const RenameChannelModal = (props) => {
   const { t } = useTranslation();
-  const newChannelValid = (channelsData) =>
-    Yup.object().shape({
-      newChannelName: Yup.string()
-        .min(3, t('maximum 20 symb min 3'))
-        .max(20, t('maximum 20 symb min 3'))
-        .required(t('required field'))
-        .notOneOf(channelsData, t('Duplicate')),
-    });
+  const newChannelValid = (channelsData) => Yup.object().shape({
+    newChannelName: Yup.string()
+      .min(3, t('maximum 20 symb min 3'))
+      .max(20, t('maximum 20 symb min 3'))
+      .required(t('required field'))
+      .notOneOf(channelsData, t('Duplicate')),
+  });
 
   const currentChannelModal = useSelector(
     (state) => state.modals.currentChannel,
@@ -78,6 +78,6 @@ function RenameChannelModal(props) {
       </Modal.Footer>
     </Modal>
   );
-}
+};
 
 export default RenameChannelModal;

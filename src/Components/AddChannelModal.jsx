@@ -43,8 +43,7 @@ function AddChannelModal(props) {
 
               // errors.newChannelName && touched.newChannelName? props.handleShow: props.handleClose
             }
-          }}
-        >
+          }}>
           {({ errors, touched }) => (
             <Form className="d-flex">
               <label className="visually-hidden" htmlFor="newChannelName">

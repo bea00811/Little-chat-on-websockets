@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useAuth from './useAuthContext';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import MyHeader from './Header';
 import { toast } from 'react-toastify';
+import MyHeader from './Header';
+import useAuth from './useAuthContext';
 
-function SighnUpPage(props) {
-  let { logIn } = useAuth();
+const SighnUpPage = (props) => {
+  const { logIn } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [error, setError] = useState(false);
@@ -48,7 +48,7 @@ function SighnUpPage(props) {
           try {
             const resp = await axios.post('/api/v1/signup', userData);
             const userName = resp.data.username;
-            const token = resp.data.token;
+            const { token } = resp.data;
             logIn(token, userName);
             navigate('/');
             values.nickName = '';
@@ -126,6 +126,6 @@ function SighnUpPage(props) {
       </Formik>
     </div>
   );
-}
+};
 
 export default SighnUpPage;

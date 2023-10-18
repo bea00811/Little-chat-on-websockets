@@ -23,8 +23,7 @@ function DeleteChannelModal(props) {
   return (
     <Modal
       show={props.showDeleteChannelModal}
-      onHide={props.handleCloseDeleteChannelModal}
-    >
+      onHide={props.handleCloseDeleteChannelModal}>
       <Modal.Header closeButton>
         <Modal.Title>{t('Delete channel')} </Modal.Title>
       </Modal.Header>
@@ -32,14 +31,12 @@ function DeleteChannelModal(props) {
       <Modal.Footer>
         <Button
           variant="secondary"
-          onClick={props.handleCloseDeleteChannelModal}
-        >
+          onClick={props.handleCloseDeleteChannelModal}>
           {t('Cancel')}
         </Button>
         <Button
           variant="danger"
-          onClick={() => deleteChannelHere(currentChannelModal)}
-        >
+          onClick={() => deleteChannelHere(currentChannelModal)}>
           {t('Delete')}
         </Button>
       </Modal.Footer>

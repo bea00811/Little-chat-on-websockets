@@ -23,8 +23,7 @@ export default function MyHeader() {
               onClick={() => {
                 logOut();
                 navigate('/login');
-              }}
-            >
+              }}>
               {t('LogOut')}
             </button>
           </li>
