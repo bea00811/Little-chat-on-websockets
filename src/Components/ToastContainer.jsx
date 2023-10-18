@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function () {
      return(
-     <div>
+     <>
         <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -18,7 +18,7 @@ export default function () {
         pauseOnHover
         theme="light"
         />
-     </div>
+     </>
   
    )
   
