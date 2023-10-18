@@ -1,5 +1,3 @@
-
-
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -9,17 +7,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-form{
+form {
   max-width: 500px;
   margin: 40px auto;
-  position:relative;
+  position: relative;
 }
 
-.addChannel{
+.addChannel {
   float: right;
 }
 .submit-btn {
-
   margin: 20px auto;
   display: block;
   border: none;
@@ -27,40 +24,37 @@ form{
   color: white;
   background: darkblue;
   border-radius: 5px;
-
 }
 
-li{
+li {
   list-style-type: none;
   margin: 5px 0;
 }
 
-.page-name-container{
+.page-name-container {
   padding-left: 30px;
   padding-top: 20px;
 }
 
-.title-container{
+.title-container {
   padding: 0 !important;
 }
-.messagesList{
+.messagesList {
   min-height: 300px;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-.channelsList{
+.channelsList {
   padding-left: 0;
 }
-.channelsList li{
-
+.channelsList li {
   font-weight: 900;
   display: flex;
   width: 100%;
 }
 
-.messagesList li{
+.messagesList li {
   list-style-type: none;
-
 }

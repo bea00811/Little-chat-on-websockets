@@ -1,22 +1,22 @@
-import { Modal, Button } from "react-bootstrap";
-import { io } from "socket.io-client";
-import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { useTranslation } from "react-i18next";
+import { Modal, Button } from 'react-bootstrap';
+import { io } from 'socket.io-client';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 const socket = io();
 
 function DeleteChannelModal(props) {
   const { t } = useTranslation();
   const currentChannelModal = useSelector(
-    (state) => state.modals.currentChannel
+    (state) => state.modals.currentChannel,
   );
 
   const deleteChannelHere = (id) => {
     const valueForSocket = {};
     valueForSocket.id = id;
-    socket.emit("removeChannel", valueForSocket);
-    toast(t("Deleted Channel"));
+    socket.emit('removeChannel', valueForSocket);
+    toast(t('Deleted Channel'));
     props.handleCloseDeleteChannelModal();
   };
 
@@ -26,21 +26,21 @@ function DeleteChannelModal(props) {
       onHide={props.handleCloseDeleteChannelModal}
     >
       <Modal.Header closeButton>
-        <Modal.Title>{t("Delete channel")} </Modal.Title>
+        <Modal.Title>{t('Delete channel')} </Modal.Title>
       </Modal.Header>
-      <Modal.Body>{t("Are you shure you want delete?")}</Modal.Body>
+      <Modal.Body>{t('Are you shure you want delete?')}</Modal.Body>
       <Modal.Footer>
         <Button
-          variant="secondary"
+          variant='secondary'
           onClick={props.handleCloseDeleteChannelModal}
         >
-          {t("Cancel")}
+          {t('Cancel')}
         </Button>
         <Button
-          variant="danger"
+          variant='danger'
           onClick={() => deleteChannelHere(currentChannelModal)}
         >
-          {t("Delete")}
+          {t('Delete')}
         </Button>
       </Modal.Footer>
     </Modal>

@@ -10,8 +10,6 @@
   },
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "react/jsx-uses-react": "off",
-    "prettier/prettier": "error",
-    "quotes": ["error", "double"]
+    "react/jsx-uses-react": "off"
   }
 }
