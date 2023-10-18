@@ -174,10 +174,9 @@ export default function MainPage() {
           </div>
           <div className='messagesContainer'>
             <ul className='messagesList'>
-              {filtered.map((item) => {
-                console.log(item);
-                return <li key={item.id}>{item.message}</li>;
-              })}
+              {filtered.map((item) => (
+                <li key={item.id}>{item.message}</li>
+              ))}
             </ul>
 
             <div className='form-wrapper'>
