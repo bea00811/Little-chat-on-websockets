@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import useAuth from './useAuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function MyHeader (props) {
   const { logOut,loggedIn } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
  return(
 
@@ -14,7 +16,7 @@ export default function MyHeader (props) {
     </li>
    {loggedIn&&<li>{'Hello, '+ JSON.parse(localStorage.user).user+ '!'}</li>} 
    {loggedIn&&<li><button className='submit-btn' onClick={()=>{logOut(); navigate('/login'); 
-   }}>LogOut</button></li>} 
+   }}>{t('LogOut')}</button></li>} 
 
   </nav>
  

@@ -18,9 +18,7 @@ export default function () {
         pauseOnHover
         theme="light"
         />
-        {/* Same as */}
-        <ToastContainer />
-        </div>
+     </div>
   
    )
   

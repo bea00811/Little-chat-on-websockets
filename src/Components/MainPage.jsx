@@ -15,42 +15,24 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { io } from 'socket.io-client';
 import MyHeader from './Header';
-import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
-import Texts from './Texts';
 import { toast } from 'react-toastify';
 import  filter from 'leo-profanity';
 
-filter.loadDictionary('ru');
+filter.add(filter.getDictionary('ru'))
 const socket = io();
-
-
-    i18n.use(initReactI18next) 
-   .init({ 
-    lng: "ru",
-    fallbackLng: "ru",    
-    resources: {
-    ru: Texts,   
-    },
-  interpolation: {
-  escapeValue: false,
-    }
-    });
 
 
   export default function MainPage(props) {
     const { t } = useTranslation();
     const { loggedIn, setLoggedIn} = useAuth();
     const channelsData = useSelector((state) => state.channels.channels);
-const currentChannel = useSelector((state) => state.channels.currentChannel);
-const messagesData = useSelector((state) => state.messages.messages);
-let currentChannelHere = channelsData.find(item=>item.id === currentChannel)
+    const currentChannel = useSelector((state) => state.channels.currentChannel);
+    const messagesData = useSelector((state) => state.messages.messages);
+    let currentChannelHere = channelsData.find(item=>item.id === currentChannel)
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-console.log(localStorage.user)
-
-
 
 
    useEffect(() => {
@@ -140,7 +122,7 @@ const renameCurrentChannel = (e)=>{
       <div className = 'channelsContainer p-2'>
       <Button className='addChannel' variant="primary" onClick={handleShow}>
       {t('Add new channel button')}
-      </Button>
+        </Button>
           <ul className='channelsList'>
             {channelsData &&
               channelsData.map((item) =>  {
@@ -150,7 +132,9 @@ const renameCurrentChannel = (e)=>{
                  </button>
                  <div>
                       <Dropdown>
-                      <Dropdown.Toggle id="dropdown-basic"></Dropdown.Toggle>
+                      <Dropdown.Toggle id="dropdown-basic">
+                      <span className='visually-hidden'>Управление каналом</span>
+                      </Dropdown.Toggle>
                       <Dropdown.Menu>
                         <Dropdown.Item onClick = {deleteCurrentChannel} >{t('Delete')}</Dropdown.Item>
                         <Dropdown.Item onClick = {renameCurrentChannel } >{t('Rename')}</Dropdown.Item>
@@ -179,7 +163,10 @@ const renameCurrentChannel = (e)=>{
      <div className = 'messagesContainer'>
         <ul className='messagesList'>
         {filtered.map((item)=>
-        <li key={item.id}>{item.message}<span>{item.msgId}</span></li>
+        
+       { 
+        console.log(item)
+        return  <li key={item.id}>{item.message}</li>}
        )}
        </ul>
 
@@ -204,7 +191,7 @@ const renameCurrentChannel = (e)=>{
           >
             {({ errors, touched }) => (
               <Form className='d-flex'>
-                <Field className={errors.message && touched.message?('form-control is-invalid'):('form-control')} placeholder="Ваше сообщение" name="message" />
+                <Field aria-label = 'Новое сообщение' className={errors.message && touched.message?('form-control is-invalid'):('form-control')} placeholder="Ваше сообщение" name="message" />
                 {errors.message && touched.message ? (<div className="invalid-tooltip">{errors.message}</div>) : null}
                 <button type="submit">{t('Send msg')}</button>
               </Form>

@@ -1,91 +1,209 @@
-import { Formik, Form, Field } from 'formik';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import * as Yup from 'yup';
-import axios from 'axios';
+import { Button } from "react-bootstrap";
+import AddChannelModal from './AddChannelModal';
+import DeleteChannelModal from './DeleteChannelModal';
+import RenameChannelModal from './RenameChannelModal';
+import Dropdown from 'react-bootstrap/Dropdown';
 import useAuth from './useAuthContext';
-import {useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllChannels, changeChannel} from '../slices/channelSlice.js';
+import { getAllMessages } from '../slices/messagesSlice.js';
+import { getCurrentChannel } from '../slices/modalSlice';
+import axios from 'axios';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+import { io } from 'socket.io-client';
 import MyHeader from './Header';
+import { useTranslation, initReactI18next } from "react-i18next";
 import { toast } from 'react-toastify';
+import  filter from 'leo-profanity';
+
+filter.add(filter.getDictionary('ru'))
+const socket = io();
 
 
+  export default function MainPage(props) {
+    const { t } = useTranslation();
+    const { loggedIn, setLoggedIn} = useAuth();
+    const channelsData = useSelector((state) => state.channels.channels);
+    const currentChannel = useSelector((state) => state.channels.currentChannel);
+    const messagesData = useSelector((state) => state.messages.messages);
+    let currentChannelHere = channelsData.find(item=>item.id === currentChannel)
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
 
+   useEffect(() => {
+     if(localStorage.user){
+      setLoggedIn(true);
+      console.log(loggedIn)
+    }
 
+     if(loggedIn === false){
+        navigate('/login');
 
-
-function Login() {
-  const { t } = useTranslation();
-   
-  let { logIn } = useAuth();
-  const navigate = useNavigate(); 
-  const [error, setError]= useState(false)
-
-  const SignupSchema = Yup.object().shape({
-    nickName: Yup.string()
-      .min(3, t('maximum 20 symb min 3'))
-      .max(20, t('maximum 20 symb min 3'))
-      .required(t('required field')),
-    pass: Yup.string()
-      .required(t('required field')),
-  });
-
-  return (
-    <div className='container'>
-      <MyHeader/>
-      <h1 className='text-center'>{t('Submit')}</h1> 
-      <Formik
-        initialValues={{
-          nickName: '',
-          pass: '',
-        }}
-        validationSchema={SignupSchema}
-        onSubmit={async (values) => {
-          const { nickName, pass } = values;
-          const userData = { username: nickName, password: pass };
-          try {
-           const resp = await axios.post('/api/v1/login', userData);
-           const userName = resp.data.username;
-           const token = resp.data.token;
-            logIn(token, userName);
-            navigate('/');
-            return resp.data;
-          } catch (err) {
-            
-            if(err.response.status===401){
-            setError(true)
-            toast.error(t('wrongUser'))
-          }else{
-            toast.error(t('wrongUser'));
-          }
-           return err;
-          }
-        }}
-      >
-        {({ errors, touched }) => (
-          <Form>
-             <label htmlFor="nickName">{t('nic')}</label>
-            <Field id = 'nickName' className = {errors.nickName&& touched.nickName?'form-control is-invalid':'form-control'} placeholder="Ваш Ник" name="nickName" />
-           
-            {errors.nickName && touched.nickName ? (
-              <div>{errors.nickName}</div>
-            ) : null}
-
-            <label htmlFor="pass">{t('pass')}</label>
-            <Field  id = 'pass' className = {errors.pass&& touched.pass?'form-control is-invalid':'form-control'}placeholder="Ваш пароль" name="pass" />
-             {errors.pass && touched.pass ? <div>{errors.pass}</div> : null}
-             {error&&<div className ='is-invalid'>{t('wrongUser')}</div>}
-            <button className='submit-btn' type="submit">{t('Submit')}</button>
-            
-          </Form>
-        )}
-      </Formik>
-      <p className='text-center'>{t('Have no account yet?')}</p>
-      <button className='submit-btn' onClick={()=>navigate('/sighnup')}>{t('SighnUp')}</button>
+     }
+   }, []);
   
+  const [showModal, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
-    </div>
-  );
+  const [showDeleteChannelModal, setShowDeleteChannelModal] = useState(false);
+  const handleCloseDeleteChannelModal = () => setShowDeleteChannelModal(false);
+  const handleShowDeleteChannelModal = () => setShowDeleteChannelModal(true);
+
+  const [showRenameChannelModal, setShowRenameChannelModal] = useState(false);
+  const handleCloseRenameChannelModal = () => setShowRenameChannelModal(false);
+  const handleShowRenameChannelModal = () => setShowRenameChannelModal(true);
+
+
+ useEffect(() => {
+ if(loggedIn){
+    try {
+      async function getChannels() {
+        const token = JSON.parse(localStorage.user).userToken;
+           const serverDataLogUser = await axios.get('/api/v1/data', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        dispatch(getAllChannels(serverDataLogUser.data.channels));
+        dispatch(getAllMessages(serverDataLogUser.data.messages));
+
+      }
+      getChannels();
+    } catch (err) {
+      toast.error('Connection mistake');
+    }
+
+   }
+  }, []);
+
+
+
+let filtered =[];
+if(typeof currentChannelHere === 'undefined'){
+  filtered = messagesData.filter(item=>item.msgId===1)
+  currentChannelHere = channelsData.find(item=>item.id === 1)
+}else{
+filtered = messagesData.filter(item=>item.msgId===currentChannelHere.id)
 }
 
-export default Login;
+
+
+ const deleteCurrentChannel = (e)=>{
+  const id = e.target.closest('.channelLi').dataset.id
+  handleShowDeleteChannelModal()
+  dispatch(getCurrentChannel(id))
+}
+
+
+const renameCurrentChannel = (e)=>{
+  handleShowRenameChannelModal()
+  const id = e.target.closest('.channelLi').dataset.id
+  dispatch(getCurrentChannel(id))
+}
+  const SignupSchema = Yup.object().shape({
+    message: Yup.string()
+     .required('Обязательное поле'),
+  });
+
+ 
+  return (
+    <div className="container h-100 my-4 overflow-hidden h-100 shadow rounded">
+      <MyHeader navigate = {navigate}/>
+      
+        
+    <div className="row h-100 bg-white">
+      <div className="col-4 col-md-2 border-end px-0 bg-light">
+      <div className = 'channelsContainer p-2'>
+      <Button className='addChannel' variant="primary" onClick={handleShow}>
+      {t('Add new channel button')}
+        </Button>
+          <ul className='channelsList'>
+            {channelsData &&
+              channelsData.map((item) =>  {
+                 return  item.removable ?  
+                 <li className='channelLi' key={item.id} data-id = {item.id}><button onClick={()=>dispatch(changeChannel(item))} type = 'button' className ='w-100 rounded-0 text-start btn btn-secondary'>
+                 <span>#{item.name}</span>
+                 </button>
+                 <div>
+                      <Dropdown>
+                      <Dropdown.Toggle id="dropdown-basic">
+                      <span className='visually-hidden'>Управление каналом</span>
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <Dropdown.Item onClick = {deleteCurrentChannel} >{t('Delete')}</Dropdown.Item>
+                        <Dropdown.Item onClick = {renameCurrentChannel } >{t('Rename')}</Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </div>
+                 </li>:
+                 <li key={item.id} data-id = {item.id}><button onClick={()=>dispatch(changeChannel(item))} type = 'button' className ='w-100 rounded-0 text-start btn btn-secondary'>
+                  <span>#{item.name}</span>
+                  </button> 
+                </li>
+            
+              }
+              )}
+          </ul>
+       </div>
+
+     </div>
+
+     <div className='title-container h-100 col border-end pl-4 bg-white'> 
+     <div className='page-name-container bg-light shadow-sm'>
+       <h5 className='text-secondary'>{t('MainPage')}</h5>
+       <h6>#<strong>{currentChannelHere&&currentChannelHere.name}</strong></h6> 
+       <p className='text-muted'>id:{currentChannelHere&&currentChannelHere.id}</p> 
+      </div>
+     <div className = 'messagesContainer'>
+        <ul className='messagesList'>
+        {filtered.map((item)=>
+        
+       { 
+        console.log(item)
+        return  <li key={item.id}>{item.message}</li>}
+       )}
+       </ul>
+
+       <div className="form-wrapper">
+          <Formik
+            initialValues={{
+              message: '',
+            }}
+            validationSchema={SignupSchema}
+            onSubmit={async (value,  {setSubmitting}) => {
+              setSubmitting(false)
+                const newValueMsg = {                
+                message:filter.clean(value.message),
+                msgId:currentChannelHere?currentChannelHere.id:null
+              }
+           
+            if (value.message !== '') {         
+                socket.emit('newMessage', newValueMsg);
+              }
+              value.message = '';
+            }}
+          >
+            {({ errors, touched }) => (
+              <Form className='d-flex'>
+                <Field aria-label = 'Новое сообщение' className={errors.message && touched.message?('form-control is-invalid'):('form-control')} placeholder="Ваше сообщение" name="message" />
+                {errors.message && touched.message ? (<div className="invalid-tooltip">{errors.message}</div>) : null}
+                <button type="submit">{t('Send msg')}</button>
+              </Form>
+            )}
+          </Formik>
+        <AddChannelModal showModal = {showModal} handleClose = {handleClose} handleShow = {handleShow}/>
+        <DeleteChannelModal showDeleteChannelModal = {showDeleteChannelModal} handleCloseDeleteChannelModal = {handleCloseDeleteChannelModal}/>
+        <RenameChannelModal showModal = {showRenameChannelModal} handleClose = {handleCloseRenameChannelModal}/>
+        </div>
+      </div>
+      </div>
+     
+    </div>
+    </div>
+  )}

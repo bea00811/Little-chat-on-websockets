@@ -6,6 +6,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './slices/configureStore.js';
+import Init from './init';
 
 
 
@@ -14,7 +15,7 @@ import store from './slices/configureStore.js';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <App />
+    <Init />
   </Provider>
 );
 

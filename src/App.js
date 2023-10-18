@@ -15,17 +15,13 @@ import ToastContainer from './Components/ToastContainer.jsx';
 import { Provider, ErrorBoundary } from '@rollbar/react'; // Provider imports 'rollbar'
 
 
+
 const socket = io();
 
 const rollbarConfig = {
   accessToken: '205a775704114435b4f6033ae34594a5',
   environment: 'testenv',
 };
-
-function TestError() {
-  const a = null;
-  return a.hello();
-}
 
 
 const AuthProvider = ({ children }) => {
@@ -84,7 +80,7 @@ socket.on('renameChannel', (channel) => {
               <Route path="*" element={<ErrorPage />} />
               <Route path="/" element={<MainPage name = 'Props Header' surname = 'Props SubHeader'/>} />
               <Route path="/login" element={<Login/>} />
-              <Route path="/sighnup" element={<SighnUpPage/>} />              
+              <Route path="/signup" element={<SighnUpPage/>} />              
               <Route path="one" element={<PageOne />} />
               <Route path="two" element={<PageTwo />} />
 
