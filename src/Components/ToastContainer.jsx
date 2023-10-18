@@ -1,10 +1,10 @@
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Toast() {
+const Toast = () => {
   return (
     <ToastContainer
-      position='top-right'
+      position="top-righ"
       autoClose={5000}
       hideProgressBar={false}
       newestOnTop={false}
@@ -13,7 +13,8 @@ export default function Toast() {
       pauseOnFocusLoss
       draggable
       pauseOnHover
-      theme='light'
+      theme="light"
     />
   );
-}
+};
+export default Toast;

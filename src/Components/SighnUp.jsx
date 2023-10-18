@@ -1,16 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import useAuth from './useAuthContext';
-import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import useAuth from './useAuthContext';
 import MyHeader from './Header';
-import { toast } from 'react-toastify';
 
-function SighnUpPage(props) {
-  let { logIn } = useAuth();
+function SighnUpPage() {
+  const { logIn } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [error, setError] = useState(false);
@@ -42,13 +41,12 @@ function SighnUpPage(props) {
         }}
         validationSchema={SignupSchema}
         onSubmit={async (values) => {
-          console.log(values);
-          const { nickName, pass, confirmPass } = values;
+          const { nickName, pass } = values;
           const userData = { username: nickName, password: pass };
           try {
             const resp = await axios.post('/api/v1/signup', userData);
             const userName = resp.data.username;
-            const token = resp.data.token;
+            const { token } = resp.data;
             logIn(token, userName);
             navigate('/');
             values.nickName = '';
@@ -57,9 +55,7 @@ function SighnUpPage(props) {
 
             return resp.data;
           } catch (err) {
-            console.log(err.message);
             toast.error('Connection mistake');
-            console.log(err.response.status);
             if (err.response.status === 409) {
               setError(true);
             }

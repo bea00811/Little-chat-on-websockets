@@ -10,7 +10,7 @@ export default function MyHeader(props) {
   return (
     <div className='container px-0'>
       <nav className='px-4 shadow-sm navbar navbar-expand-lg navbar-light bg-white d-flex justify-content-between'>
-        <li onClick={console.log('localstorage user' + localStorage.user)}>
+        <li>
           <Link to='/'>Hexlet Chat</Link>
         </li>
         {loggedIn && (
