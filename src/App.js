@@ -31,11 +31,12 @@ const AuthProvider = ({ children }) => {
     setLoggedIn(false);
   };
 
+  const providedValue = {
+    logIn, logOut, loggedIn, setLoggedIn,
+  };
+
   return (
-    <AuthContext.Provider value={{
-      logIn, logOut, loggedIn, setLoggedIn,
-    }}
-    >
+    <AuthContext.Provider value={providedValue}>
       {children}
     </AuthContext.Provider>
   );
