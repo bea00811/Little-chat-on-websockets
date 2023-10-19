@@ -32,8 +32,8 @@ const AuthProvider = ({ children }) => {
   };
 
   const cachedProvidedValue = useMemo(() => ({
-    logIn, logOut, loggedIn, setLoggedIn,
-  }), [logIn, logOut, loggedIn, setLoggedIn]);
+    logIn, logOut, loggedIn,
+  }), [logIn, logOut, loggedIn]);
 
   return (
     <AuthContext.Provider value={cachedProvidedValue}>
