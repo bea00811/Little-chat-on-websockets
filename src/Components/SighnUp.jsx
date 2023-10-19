@@ -109,7 +109,8 @@ const SighnUpPage = () => {
             <button
               className="submit-btn"
               type="submit"
-              disabled={isSubmitting}>
+              disabled={isSubmitting}
+            >
               {' '}
               {t('register')}
             </button>

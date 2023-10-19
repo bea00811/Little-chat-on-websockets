@@ -10,23 +10,23 @@ const socket = io();
 
 const RenameChannelModal = (props) => {
   const { t } = useTranslation();
-  const newChannelValid = (channelsData) =>
-    Yup.object().shape({
-      newChannelName: Yup.string()
-        .min(3, t('maximum 20 symb min 3'))
-        .max(20, t('maximum 20 symb min 3'))
-        .required(t('required field'))
-        .notOneOf(channelsData, t('Duplicate')),
-    });
+  const { showModal, handleClose } = props;
+  const newChannelValid = (channelsData) => Yup.object().shape({
+    newChannelName: Yup.string()
+      .min(3, t('maximum 20 symb min 3'))
+      .max(20, t('maximum 20 symb min 3'))
+      .required(t('required field'))
+      .notOneOf(channelsData, t('Duplicate')),
+  });
 
   const currentChannelModal = useSelector(
-    (state) => state.modals.currentChannel
+    (state) => state.modals.currentChannel,
   );
   const channelsData = useSelector((state) => state.channels.channels);
   const channelsNames = channelsData.map((item) => item.name);
 
   return (
-    <Modal show={props.showModal} onHide={props.handleClose}>
+    <Modal show={showModal} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>{t('Rename channel')}</Modal.Title>
       </Modal.Header>
@@ -43,9 +43,10 @@ const RenameChannelModal = (props) => {
               valueForSocket.name = value.newChannelName;
               socket.emit('renameChannel', valueForSocket);
               toast(t('Renamed Channel'));
-              props.handleClose();
+              handleClose();
             }
-          }}>
+          }}
+        >
           {({ errors, touched }) => (
             <Form className="d-flex">
               <label className="visually-hidden" htmlFor="newChannelName">
@@ -72,7 +73,7 @@ const RenameChannelModal = (props) => {
         </Formik>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={props.handleClose}>
+        <Button variant="secondary" onClick={handleClose}>
           {t('Cancel')}
         </Button>
       </Modal.Footer>
