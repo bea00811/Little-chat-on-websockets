@@ -1,16 +1,16 @@
+import { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import axios from 'axios';
 import useAuth from './useAuthContext';
-import { useState } from 'react';
 import MyHeader from './Header';
 
-function Login() {
+const Login = () => {
   const { t } = useTranslation();
 
-  let { logIn } = useAuth();
+  const { logIn } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState(false);
 
@@ -38,7 +38,7 @@ function Login() {
           try {
             const resp = await axios.post('/api/v1/login', userData);
             const userName = resp.data.username;
-            const token = resp.data.token;
+            const { token } = resp.data;
             logIn(token, userName);
             navigate('/');
             return resp.data;
@@ -48,7 +48,8 @@ function Login() {
             }
             return err;
           }
-        }}>
+        }}
+      >
         {({ errors, touched }) => (
           <Form>
             <label htmlFor="nickName">{t('nic')}</label>
@@ -82,18 +83,22 @@ function Login() {
             {errors.pass && touched.pass ? <div>{errors.pass}</div> : null}
             {error && <div className="err">{t('wrongUser')}</div>}
 
-            <button className="submit-btn" type="submit">
+            <button
+              className="submit-btn"
+              type="submit">
               {t('Submit')}
             </button>
           </Form>
         )}
       </Formik>
       <p className="text-center">{t('Have no account yet?')}</p>
-      <button className="submit-btn" onClick={() => navigate('/signup')}>
+      <button
+        className="submit-btn"
+        onClick={() => navigate('/signup')}>
         {t('SighnUp')}
       </button>
     </div>
   );
-}
+};
 
 export default Login;

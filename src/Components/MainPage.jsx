@@ -22,7 +22,7 @@ import AddChannelModal from './AddChannelModal';
 filter.add(filter.getDictionary('ru'));
 const socket = io();
 
-export default function MainPage() {
+const MainPage = () => {
   const { t } = useTranslation();
   const { loggedIn, setLoggedIn } = useAuth();
   const channelsData = useSelector((state) => state.channels.channels);
@@ -38,7 +38,6 @@ export default function MainPage() {
   useEffect(() => {
     if (localStorage.user) {
       setLoggedIn(true);
-      console.log(loggedIn);
     }
 
     if (loggedIn === false) {
@@ -245,4 +244,6 @@ export default function MainPage() {
       </div>
     </div>
   );
-}
+};
+
+export default MainPage;
