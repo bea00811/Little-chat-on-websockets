@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { io } from 'socket.io-client';
 import { Provider, ErrorBoundary } from '@rollbar/react'; // Provider imports 'rollbar'
@@ -31,12 +31,12 @@ const AuthProvider = ({ children }) => {
     setLoggedIn(false);
   };
 
-  const providedValue = {
+  const cachedProvidedValue = useMemo(() => ({
     logIn, logOut, loggedIn, setLoggedIn,
-  };
+  }), [logIn, logOut, loggedIn, setLoggedIn]);
 
   return (
-    <AuthContext.Provider value={providedValue}>
+    <AuthContext.Provider value={cachedProvidedValue}>
       {children}
     </AuthContext.Provider>
   );
