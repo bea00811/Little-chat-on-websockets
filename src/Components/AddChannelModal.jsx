@@ -5,24 +5,25 @@ import { io } from 'socket.io-client';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+
 const socket = io();
 
-function AddChannelModal(props) {
+const AddChannelModal = (props) => {
   const { t } = useTranslation();
+  const { showModal, handleClose } = props;
   const channelsData = useSelector((state) => state.channels.channels);
   const channelsNames = channelsData.map((item) => item.name);
 
-  const newChannelValid = (channelsData) =>
-    Yup.object().shape({
-      newChannelName: Yup.string()
-        .min(3, t('maximum 20 symb min 3'))
-        .max(20, t('maximum 20 symb min 3'))
-        .required(t('required field'))
-        .notOneOf(channelsData, t('Duplicate')),
-    });
+  const newChannelValid = (channels) => Yup.object().shape({
+    newChannelName: Yup.string()
+      .min(3, t('maximum 20 symb min 3'))
+      .max(20, t('maximum 20 symb min 3'))
+      .required(t('required field'))
+      .notOneOf(channels, t('Duplicate')),
+  });
 
   return (
-    <Modal show={props.showModal} onHide={props.handleClose}>
+    <Modal show={showModal} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>{t('Add new channel')}</Modal.Title>
       </Modal.Header>
@@ -32,18 +33,17 @@ function AddChannelModal(props) {
             newChannelName: '',
           }}
           validationSchema={newChannelValid(channelsNames)}
-          onSubmit={async (value, errors, touched) => {
+          onSubmit={async (value, errors) => {
             console.log(errors);
             if (value.newChannelName !== '') {
               const valueForSocket = {};
               valueForSocket.name = value.newChannelName;
               socket.emit('newChannel', valueForSocket);
               toast(t('Added new Channel'));
-              props.handleClose();
-
-              // errors.newChannelName && touched.newChannelName? props.handleShow: props.handleClose
+              handleClose();
             }
-          }}>
+          }}
+        >
           {({ errors, touched }) => (
             <Form className="d-flex">
               <label className="visually-hidden" htmlFor="newChannelName">
@@ -70,12 +70,12 @@ function AddChannelModal(props) {
         </Formik>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={props.handleClose}>
+        <Button variant="secondary" onClick={handleClose}>
           {t('Cancel')}
         </Button>
       </Modal.Footer>
     </Modal>
   );
-}
+};
 
 export default AddChannelModal;

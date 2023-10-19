@@ -6,10 +6,11 @@ import { useTranslation } from 'react-i18next';
 
 const socket = io();
 
-function DeleteChannelModal(props) {
+const DeleteChannelModal = (props) => {
+  const {handleCloseDeleteChannelModal,showDeleteChannelModal}=props;
   const { t } = useTranslation();
   const currentChannelModal = useSelector(
-    (state) => state.modals.currentChannel
+    (state) => state.modals.currentChannel,
   );
 
   const deleteChannelHere = (id) => {
@@ -17,31 +18,37 @@ function DeleteChannelModal(props) {
     valueForSocket.id = id;
     socket.emit('removeChannel', valueForSocket);
     toast(t('Deleted Channel'));
-    props.handleCloseDeleteChannelModal();
+    handleCloseDeleteChannelModal();
   };
 
   return (
     <Modal
-      show={props.showDeleteChannelModal}
-      onHide={props.handleCloseDeleteChannelModal}>
+      show={showDeleteChannelModal}
+      onHide={handleCloseDeleteChannelModal}
+    >
       <Modal.Header closeButton>
-        <Modal.Title>{t('Delete channel')} </Modal.Title>
+        <Modal.Title>
+          {t('Delete channel')}
+          {' '}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>{t('Are you shure you want delete?')}</Modal.Body>
       <Modal.Footer>
         <Button
           variant="secondary"
-          onClick={props.handleCloseDeleteChannelModal}>
+          onClick={handleCloseDeleteChannelModal}
+        >
           {t('Cancel')}
         </Button>
         <Button
           variant="danger"
-          onClick={() => deleteChannelHere(currentChannelModal)}>
+          onClick={() => deleteChannelHere(currentChannelModal)}
+        >
           {t('Delete')}
         </Button>
       </Modal.Footer>
     </Modal>
   );
-}
+};
 
 export default DeleteChannelModal;
