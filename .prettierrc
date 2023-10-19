@@ -4,6 +4,7 @@
   "semi": true,
   "bracketSpacing": true,
   "bracketSameLine": true,
-  "bracketLine": true
-  // "singleAttributePerLine": true
-}
+  "printWidth": 80,
+  "tabWidth":2,
+  "trailingComma": "es5"
+ }

@@ -48,8 +48,7 @@ const Login = () => {
             }
             return err;
           }
-        }}
-      >
+        }}>
         {({ errors, touched }) => (
           <Form>
             <label htmlFor="nickName">{t('nic')}</label>
@@ -92,9 +91,8 @@ const Login = () => {
         )}
       </Formik>
       <p className="text-center">{t('Have no account yet?')}</p>
-      <button
-        className="submit-btn"
-        onClick={() => navigate('/signup')}>
+      <button  className="submit-btn"onClick={() => navigate('/signup')}
+      >
         {t('SighnUp')}
       </button>
     </div>

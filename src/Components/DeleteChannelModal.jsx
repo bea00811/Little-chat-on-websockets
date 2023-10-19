@@ -9,7 +9,7 @@ const socket = io();
 function DeleteChannelModal(props) {
   const { t } = useTranslation();
   const currentChannelModal = useSelector(
-    (state) => state.modals.currentChannel,
+    (state) => state.modals.currentChannel
   );
 
   const deleteChannelHere = (id) => {

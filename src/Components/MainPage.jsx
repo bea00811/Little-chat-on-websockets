@@ -32,6 +32,7 @@ const MainPage = () => {
   const currentChannelHere = channelsData.find(
     (item) => item.id === currentChannel,
   );
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

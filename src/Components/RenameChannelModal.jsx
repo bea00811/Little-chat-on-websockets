@@ -10,16 +10,17 @@ const socket = io();
 
 const RenameChannelModal = (props) => {
   const { t } = useTranslation();
-  const newChannelValid = (channelsData) => Yup.object().shape({
-    newChannelName: Yup.string()
-      .min(3, t('maximum 20 symb min 3'))
-      .max(20, t('maximum 20 symb min 3'))
-      .required(t('required field'))
-      .notOneOf(channelsData, t('Duplicate')),
-  });
+  const newChannelValid = (channelsData) =>
+    Yup.object().shape({
+      newChannelName: Yup.string()
+        .min(3, t('maximum 20 symb min 3'))
+        .max(20, t('maximum 20 symb min 3'))
+        .required(t('required field'))
+        .notOneOf(channelsData, t('Duplicate')),
+    });
 
   const currentChannelModal = useSelector(
-    (state) => state.modals.currentChannel,
+    (state) => state.modals.currentChannel
   );
   const channelsData = useSelector((state) => state.channels.channels);
   const channelsNames = channelsData.map((item) => item.name);
@@ -44,8 +45,7 @@ const RenameChannelModal = (props) => {
               toast(t('Renamed Channel'));
               props.handleClose();
             }
-          }}
-        >
+          }}>
           {({ errors, touched }) => (
             <Form className="d-flex">
               <label className="visually-hidden" htmlFor="newChannelName">

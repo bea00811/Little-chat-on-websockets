@@ -9,34 +9,39 @@ const channelSlice = createSlice({
   name: 'channels',
   initialState,
   reducers: {
-    getAllChannels: (state = initialState, action) => {
-      state.channels = action.payload;
+    getAllChannels: (state, action) => {
+      const newState = state;
+      newState.channels = action.payload;
     },
-    changeChannel: (state = initialState, action) => {
-      state.currentChannel = action.payload.id;
+    changeChannel: (state, action) => {
+      const newState = state;
+      newState.currentChannel = action.payload.id;
     },
-    addChannel: (state = initialState, action) => {
+    addChannel: (state, action) => {
+      const newState = state;
       console.log(action);
       const { id } = action.payload;
-      state.channels.push(action.payload);
-      state.currentChannel = id;
+      newState.channels.push(action.payload);
+      newState.currentChannel = id;
     },
-    deleteChannel: (state = initialState, action) => {
+    deleteChannel: (state, action) => {
+      const newState = state;
       const { id } = action.payload;
       const filteredChannels = state.channels.filter((el) => el.id !== id);
-      state.channels = filteredChannels;
-      state.currentChannel = 1;
+      newState.channels = filteredChannels;
+      newState.currentChannel = 1;
     },
-    renameChannel: (state = initialState, action) => {
+    renameChannel: (state, action) => {
       const newState = state;
       const { id, name } = action.payload;
       const newChannels = newState.channels.map((item) => {
+        const newItem = {
+          id: item.id,
+          name,
+          removable: true,
+        };
         if (item.id === id) {
-          return (item = {
-            id: item.id,
-            name,
-            removable: true,
-          });
+          return newItem;
         }
         return item;
       });

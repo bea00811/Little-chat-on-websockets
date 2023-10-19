@@ -65,8 +65,7 @@ const SighnUpPage = (props) => {
             }
             return err;
           }
-        }}
-      >
+        }}>
         {({ isSubmitting, errors, touched }) => (
           <Form>
             <label htmlFor="nickName">{t('regName')}</label>
@@ -115,8 +114,7 @@ const SighnUpPage = (props) => {
             <button
               className="submit-btn"
               type="submit"
-              disabled={isSubmitting}
-            >
+              disabled={isSubmitting}>
               {' '}
               {t('register')}
             </button>

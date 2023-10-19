@@ -9,7 +9,11 @@ import MainPage from './Components/MainPage.jsx';
 import SighnUpPage from './Components/SighnUp.jsx';
 import AuthContext from './Components/CreateContext.jsx';
 import { sendMessages, removeChannelMessages } from './slices/messagesSlice.js';
-import { addChannel, deleteChannel, renameChannel } from './slices/channelSlice.js';
+import {
+  addChannel,
+  deleteChannel,
+  renameChannel,
+} from './slices/channelSlice.js';
 import ToastContainer from './Components/ToastContainer.jsx';
 
 const socket = io();
@@ -32,9 +36,13 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{
-      logIn, logOut, loggedIn, setLoggedIn,
-    }}
+    <AuthContext.Provider
+      value={{
+        logIn,
+        logOut,
+        loggedIn,
+        setLoggedIn,
+      }}
     >
       {children}
     </AuthContext.Provider>
