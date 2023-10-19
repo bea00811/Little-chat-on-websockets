@@ -102,7 +102,7 @@ const MainPage = () => {
     dispatch(getCurrentChannel(id));
   };
   const SignupSchema = Yup.object().shape({
-    message: Yup.string().required('Обязательное поле'),
+    message: Yup.string(),
   });
 
   return (
@@ -197,15 +197,17 @@ const MainPage = () => {
                 validationSchema={SignupSchema}
                 onSubmit={async (value, { setSubmitting }) => {
                   setSubmitting(false);
+                  console.log(inputValue);
                   const newValueMsg = {
-                    message: filter.clean(value.message),
+                    message: filter.clean(inputValue),
                     msgId: currentChannelHere ? currentChannelHere.id : null,
                   };
 
-                  if (value.message !== '') {
+                  if (inputValue !== '') {
                     socket.emit('newMessage', newValueMsg);
                   }
                   setValue('');
+                  // value.message = '';
                 }}
               >
                 {({ errors, touched }) => (
