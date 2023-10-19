@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next';
 const socket = io();
 
 const DeleteChannelModal = (props) => {
-  const {handleCloseDeleteChannelModal,showDeleteChannelModal}=props;
   const { t } = useTranslation();
+  const { handleCloseDeleteChannelModal, showDeleteChannelModal } = props;
   const currentChannelModal = useSelector(
     (state) => state.modals.currentChannel,
   );
