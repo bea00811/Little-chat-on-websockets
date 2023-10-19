@@ -24,7 +24,7 @@ const socket = io();
 
 const MainPage = () => {
   const { t } = useTranslation();
-  const { loggedIn, setLoggedIn } = useAuth();
+  const { loggedIn } = useAuth();
   const [inputValue, setValue] = useState('');
   const channelsData = useSelector((state) => state.channels.channels);
   const currentChannel = useSelector((state) => state.channels.currentChannel);
@@ -32,17 +32,11 @@ const MainPage = () => {
   const currentChannelHere = channelsData.find(
     (item) => item.id === currentChannel,
   );
-  console.log(currentChannelHere);
-  console.log('currentChannelHere');
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (localStorage.user) {
-      setLoggedIn(true);
-      console.log(loggedIn);
-    }
-
     if (loggedIn === false) {
       navigate('/login');
     }
