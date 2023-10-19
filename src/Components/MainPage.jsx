@@ -25,6 +25,7 @@ const socket = io();
 const MainPage = () => {
   const { t } = useTranslation();
   const { loggedIn, setLoggedIn } = useAuth();
+  const [inputValue, setValue] = useState('');
   const channelsData = useSelector((state) => state.channels.channels);
   const currentChannel = useSelector((state) => state.channels.currentChannel);
   const messagesData = useSelector((state) => state.messages.messages);
@@ -204,7 +205,7 @@ const MainPage = () => {
                   if (value.message !== '') {
                     socket.emit('newMessage', newValueMsg);
                   }
-                  value.message = '';
+                  setValue('');
                 }}
               >
                 {({ errors, touched }) => (
@@ -217,6 +218,8 @@ const MainPage = () => {
                           : 'form-control'
                       }
                       placeholder="Ваше сообщение"
+                      onChange={(e) => setValue(e.target.value)}
+                      value={inputValue}
                       name="message"
                     />
                     {errors.message && touched.message ? (
