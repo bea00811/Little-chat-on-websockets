@@ -1,6 +1,6 @@
-import Texts from './Components/Texts';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import Texts from './Components/Texts';
 import App from './App';
 
 export default function Init() {

@@ -17,12 +17,12 @@ const channelSlice = createSlice({
     },
     addChannel: (state = initialState, action) => {
       console.log(action);
-      const id = action.payload.id;
+      const { id } = action.payload;
       state.channels.push(action.payload);
       state.currentChannel = id;
     },
     deleteChannel: (state = initialState, action) => {
-      const id = action.payload.id;
+      const { id } = action.payload;
       const filteredChannels = state.channels.filter((el) => el.id !== id);
       state.channels = filteredChannels;
     },
@@ -30,12 +30,13 @@ const channelSlice = createSlice({
       const newState = state;
       const { id, name } = action.payload;
       const newChannels = newState.channels.map((item) => {
-        if (item.id === id)
+        if (item.id === id) {
           return (item = {
             id: item.id,
-            name: name,
+            name,
             removable: true,
           });
+        }
         return item;
       });
       newState.channels = newChannels;

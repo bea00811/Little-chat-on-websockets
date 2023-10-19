@@ -24,7 +24,6 @@ const messagesSlice = createSlice({
   },
 });
 
-export const { getAllMessages, sendMessages, removeChannelMessages } =
-  messagesSlice.actions;
+export const { getAllMessages, sendMessages, removeChannelMessages } = messagesSlice.actions;
 
 export default messagesSlice.reducer;
