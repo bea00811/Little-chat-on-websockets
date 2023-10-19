@@ -8,10 +8,9 @@ const modalSlice = createSlice({
   name: 'modals',
   initialState,
   reducers: {
-    getCurrentChannel: (state = initialState, action) => {
-      state.currentChannel = action.payload;
-      console.log(state.currentChannel);
-      console.log(action);
+    getCurrentChannel: (action, state = initialState) => {
+      const newState = state;
+      newState.currentChannel = action.payload;
     },
   },
 });

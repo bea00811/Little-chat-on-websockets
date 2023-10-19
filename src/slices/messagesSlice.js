@@ -7,11 +7,13 @@ const messagesSlice = createSlice({
   name: 'messages',
   initialState,
   reducers: {
-    getAllMessages: (state = initialState, action) => {
-      state.messages = action.payload;
+    getAllMessages: (action, state = initialState) => {
+      const newState = state;
+      newState.messages = action.payload;
     },
-    sendMessages: (state = initialState, action) => {
-      state.messages.push(action.payload);
+    sendMessages: (action, state = initialState) => {
+      const newState = state;
+      newState.messages.push(action.payload);
     },
     removeChannelMessages: (state, action) => {
       const newState = state;
