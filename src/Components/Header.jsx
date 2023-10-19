@@ -1,29 +1,28 @@
-import { Link } from 'react-router-dom';
-import useAuth from './useAuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import useAuth from './useAuthContext';
 
-export default function MyHeader() {
+const MyHeader = () => {
   const { logOut, loggedIn } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   return (
     <div className="container px-0">
       <nav className="px-4 shadow-sm navbar navbar-expand-lg navbar-light bg-white d-flex justify-content-between">
-        <li onClick={console.log('localstorage user' + localStorage.user)}>
+        <li>
           <Link to="/">Hexlet Chat</Link>
         </li>
-        {loggedIn && (
-          <li>{'Hello, ' + JSON.parse(localStorage.user).user + '!'}</li>
-        )}
+        {loggedIn && <li>{`Hello, ${JSON.parse(localStorage.user).user}!`}</li>}
         {loggedIn && (
           <li>
             <button
+              type="button"
               className="submit-btn"
               onClick={() => {
                 logOut();
                 navigate('/login');
-              }}>
+              }}
+            >
               {t('LogOut')}
             </button>
           </li>
@@ -31,4 +30,6 @@ export default function MyHeader() {
       </nav>
     </div>
   );
-}
+};
+
+export default MyHeader;
