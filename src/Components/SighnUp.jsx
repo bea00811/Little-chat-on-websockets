@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
@@ -9,7 +8,7 @@ import { toast } from 'react-toastify';
 import MyHeader from './Header';
 import useAuth from './useAuthContext';
 
-const SighnUpPage = (props) => {
+const SighnUpPage = () => {
   const { logIn } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -43,7 +42,7 @@ const SighnUpPage = (props) => {
         validationSchema={SignupSchema}
         onSubmit={async (values) => {
           console.log(values);
-          const { nickName, pass, confirmPass } = values;
+          const { nickName, pass } = values;
           const userData = { username: nickName, password: pass };
           try {
             const resp = await axios.post('/api/v1/signup', userData);
@@ -51,13 +50,8 @@ const SighnUpPage = (props) => {
             const { token } = resp.data;
             logIn(token, userName);
             navigate('/');
-            values.nickName = '';
-            values.pass = '';
-            values.confirmPass = '';
-
             return resp.data;
           } catch (err) {
-            console.log(err.message);
             toast.error('Connection mistake');
             console.log(err.response.status);
             if (err.response.status === 409) {
@@ -65,7 +59,8 @@ const SighnUpPage = (props) => {
             }
             return err;
           }
-        }}>
+        }}
+      >
         {({ isSubmitting, errors, touched }) => (
           <Form>
             <label htmlFor="nickName">{t('regName')}</label>
