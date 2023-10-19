@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import Texts from './Components/Texts';
 import App from './App';
 
-export default function Init() {
+const Init = () => {
   const i18nextInstance = i18n.createInstance();
   i18nextInstance.use(initReactI18next).init({
     lng: 'ru',
@@ -17,4 +17,6 @@ export default function Init() {
   });
 
   return <App />;
-}
+};
+
+export default Init;
