@@ -38,6 +38,7 @@ const MainPage = () => {
   useEffect(() => {
     if (localStorage.user) {
       setLoggedIn(true);
+      console.log(loggedIn);
     }
 
     if (loggedIn === false) {
@@ -203,7 +204,7 @@ const MainPage = () => {
                   if (value.message !== '') {
                     socket.emit('newMessage', newValueMsg);
                   }
-                
+                  value.message = '';
                 }}
               >
                 {({ errors, touched }) => (
