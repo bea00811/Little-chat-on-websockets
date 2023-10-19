@@ -29,10 +29,9 @@ const MainPage = () => {
   const channelsData = useSelector((state) => state.channels.channels);
   const currentChannel = useSelector((state) => state.channels.currentChannel);
   const messagesData = useSelector((state) => state.messages.messages);
-  let currentChannelHere = channelsData.find(
+  const currentChannelHere = channelsData.find(
     (item) => item.id === currentChannel,
   );
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -80,15 +79,7 @@ const MainPage = () => {
     }
   }, []);
 
-  let filtered = [];
-  if (typeof currentChannelHere === 'undefined') {
-    filtered = messagesData.filter((item) => item.msgId === 1);
-    currentChannelHere = channelsData.find((item) => item.id === 1);
-  } else {
-    filtered = messagesData.filter(
-      (item) => item.msgId === currentChannelHere.id,
-    );
-  }
+  const filtered = messagesData.filter((item) => item.msgId === currentChannelHere.id);
 
   const deleteCurrentChannel = (e) => {
     const { id } = e.target.closest('.channelLi').dataset;
@@ -197,7 +188,6 @@ const MainPage = () => {
                 validationSchema={SignupSchema}
                 onSubmit={async (value, { setSubmitting }) => {
                   setSubmitting(false);
-                  console.log(inputValue);
                   const newValueMsg = {
                     message: filter.clean(inputValue),
                     msgId: currentChannelHere ? currentChannelHere.id : null,
@@ -207,7 +197,6 @@ const MainPage = () => {
                     socket.emit('newMessage', newValueMsg);
                   }
                   setValue('');
-                  // value.message = '';
                 }}
               >
                 {({ errors, touched }) => (
