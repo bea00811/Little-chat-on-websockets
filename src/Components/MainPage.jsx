@@ -203,7 +203,7 @@ const MainPage = () => {
                   if (value.message !== '') {
                     socket.emit('newMessage', newValueMsg);
                   }
-                  value.message = '';
+                
                 }}
               >
                 {({ errors, touched }) => (
