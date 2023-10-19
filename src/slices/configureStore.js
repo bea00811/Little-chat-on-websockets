@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import getAllChannels1 from './channelSlice.js';
-import getAllMessages1 from './messagesSlice.js';
-import getAllModals1 from './modalSlice.js';
+import getChannels from './channelSlice.js';
+import getMessages  from './messagesSlice.js';
+import getModals from './modalSlice.js';
 
-const getAllChannels = getAllChannels1;
-const getAllMessages = getAllMessages1;
-const getAllModals = getAllModals1;
+const getAllChannels = getChannels;
+const getAllMessages = getMessages;
+const getAllModals = getModals;
 export default configureStore({
   reducer: {
     channels: getAllChannels,

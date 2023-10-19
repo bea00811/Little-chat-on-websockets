@@ -41,7 +41,6 @@ const AuthProvider = ({ children }) => {
         logIn,
         logOut,
         loggedIn,
-        setLoggedIn,
       }}
     >
       {children}
