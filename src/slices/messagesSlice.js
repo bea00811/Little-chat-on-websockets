@@ -11,9 +11,8 @@ const messagesSlice = createSlice({
       const newState = state;
       newState.messages = action.payload;
     },
-    sendMessages: (action, state = initialState) => {
-      const newState = state;
-      newState.messages.push(action.payload);
+    sendMessages: (state, action) => {
+      state.messages.push(action.payload);
     },
     removeChannelMessages: (state, action) => {
       const newState = state;
