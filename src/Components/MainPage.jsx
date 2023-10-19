@@ -24,7 +24,7 @@ const socket = io();
 
 const MainPage = () => {
   const { t } = useTranslation();
-  const { loggedIn, logIn } = useAuth();
+  const { loggedIn, setLoggedIn } = useAuth();
   const [inputValue, setValue] = useState('');
   const channelsData = useSelector((state) => state.channels.channels);
   const currentChannel = useSelector((state) => state.channels.currentChannel);
@@ -39,7 +39,7 @@ const MainPage = () => {
 
   useEffect(() => {
     if (localStorage.user) {
-      logIn(true);
+      setLoggedIn(true);
       console.log(loggedIn);
     }
 
