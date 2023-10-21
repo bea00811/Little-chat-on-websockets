@@ -9,10 +9,17 @@ import MainPage from './Components/MainPage.jsx';
 import SighnUpPage from './Components/SighnUp.jsx';
 import AuthContext from './Components/CreateContext.jsx';
 import { sendMessages, removeChannelMessages } from './slices/messagesSlice.js';
-import { addChannel, deleteChannel, renameChannel } from './slices/channelSlice.js';
+import {
+  addChannel, deleteChannel, renameChannel, changeChannel,
+} from './slices/channelSlice.js';
 import ToastContainer from './Components/ToastContainer.jsx';
 
 const socket = io();
+
+const rollbarConfig = {
+  accessToken: '205a775704114435b4f6033ae34594a5',
+  environment: 'testenv',
+};
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -45,8 +52,6 @@ const App = () => {
   });
 
   socket.on('newChannel', (channel) => {
-    console.log(channel);
-    console.log('channelnew');
     dispatch(addChannel(channel));
   });
 
@@ -54,6 +59,7 @@ const App = () => {
     console.log(channel);
     console.log('channel');
     dispatch(deleteChannel(channel));
+    dispatch(changeChannel(1));
     dispatch(removeChannelMessages(channel));
   });
 
@@ -62,7 +68,7 @@ const App = () => {
   });
 
   return (
-    <Provider>
+    <Provider config={rollbarConfig}>
       <ErrorBoundary>
         <AuthProvider>
           {/* <TestError /> */}
