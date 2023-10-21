@@ -79,6 +79,8 @@ const MainPage = () => {
 
   const deleteCurrentChannel = (e) => {
     const { id } = e.target.closest('.channelLi').dataset;
+    console.log(id);
+    console.log('deleted id');
     handleShowDeleteChannelModal();
     dispatch(getCurrentChannel(id));
   };

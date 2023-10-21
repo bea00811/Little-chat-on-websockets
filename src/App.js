@@ -14,11 +14,6 @@ import ToastContainer from './Components/ToastContainer.jsx';
 
 const socket = io();
 
-const rollbarConfig = {
-  accessToken: '205a775704114435b4f6033ae34594a5',
-  environment: 'testenv',
-};
-
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const logIn = (token, username) => {
@@ -50,10 +45,14 @@ const App = () => {
   });
 
   socket.on('newChannel', (channel) => {
+    console.log(channel);
+    console.log('channelnew');
     dispatch(addChannel(channel));
   });
 
   socket.on('removeChannel', (channel) => {
+    console.log(channel);
+    console.log('channel');
     dispatch(deleteChannel(channel));
     dispatch(removeChannelMessages(channel));
   });
@@ -63,7 +62,7 @@ const App = () => {
   });
 
   return (
-    <Provider config={rollbarConfig}>
+    <Provider>
       <ErrorBoundary>
         <AuthProvider>
           {/* <TestError /> */}

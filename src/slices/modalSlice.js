@@ -8,7 +8,9 @@ const modalSlice = createSlice({
   name: 'modals',
   initialState,
   reducers: {
-    getCurrentChannel: (action, state = initialState) => {
+    getCurrentChannel: (state, action) => {
+      console.log(action.payload);
+      console.log('id proveded in ModalSlice getcurrentChammel');
       const newState = state;
       newState.currentChannel = action.payload;
     },
