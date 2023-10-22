@@ -142,6 +142,7 @@ const MainPage = () => {
                   </li>
                 ) : (
                   <li key={item.id} data-id={item.id}>
+                    {console.log(item)}
                     <button
                       onClick={() => dispatch(changeChannel(item))}
                       type="button"
@@ -184,8 +185,7 @@ const MainPage = () => {
                   message: '',
                 }}
                 validationSchema={SignupSchema}
-                onSubmit={async (value, { setSubmitting }) => {
-                  setSubmitting(false);
+                onSubmit={async () => {
                   const newValueMsg = {
                     message: filter.clean(inputValue),
                     msgId: currentChannelHere ? currentChannelHere.id : null,

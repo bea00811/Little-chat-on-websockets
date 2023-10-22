@@ -15,11 +15,16 @@ const channelSlice = createSlice({
     },
     changeChannel: (state, action) => {
       const newState = state;
-      newState.currentChannel = action.payload.id;
+      console.log(action);
+      console.log('action changeChannel');
+      const { id } = action.payload;
+      newState.currentChannel = id;
     },
     addChannel: (state, action) => {
       const newState = state;
+      const { id } = action.payload;
       newState.channels.push(action.payload);
+      newState.currentChannel = id;
     },
     deleteChannel: (state, action) => {
       const newState = state;
