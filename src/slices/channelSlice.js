@@ -17,21 +17,19 @@ const channelSlice = createSlice({
       const newState = state;
       console.log(action);
       console.log('action changeChannel');
-      const { id } = action.payload;
-      newState.currentChannel = id;
+      newState.currentChannel = action.payload;
     },
     addChannel: (state, action) => {
       const newState = state;
-      const { id } = action.payload;
+      // const { id } = action.payload;
       newState.channels.push(action.payload);
-      newState.currentChannel = id;
+      // newState.currentChannel = id;
     },
     deleteChannel: (state, action) => {
       const newState = state;
       const { id } = action.payload;
       const filteredChannels = state.channels.filter((el) => el.id !== id);
       newState.channels = filteredChannels;
-      newState.currentChannel = 1;
     },
     renameChannel: (state, action) => {
       const newState = state;

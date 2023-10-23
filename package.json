@@ -29,7 +29,8 @@
     "yup": "^1.3.2"
   },
   "scripts": {
-    "start": "npx start-server",
+    "start": "npx start server",
+    "start-frontend": "PORT=5000 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -91,8 +91,13 @@ const MainPage = () => {
     dispatch(getCurrentChannel(id));
   };
   const SignupSchema = Yup.object().shape({
-    message: Yup.string(),
+    message: Yup.string().min(1, t('maximum 20 symb min 1')),
   });
+
+  const clickHandler = (id, allChannels, dispatch1) => {
+    const currentChannel1 = allChannels.find(((item) => item.id === id));
+    dispatch1(changeChannel(currentChannel1.id));
+  };
 
   return (
     <div className="container h-100 my-4 overflow-hidden h-100 shadow rounded">
@@ -113,7 +118,8 @@ const MainPage = () => {
                 && channelsData.map((item) => (item.removable ? (
                   <li className="channelLi" key={item.id} data-id={item.id}>
                     <button
-                      onClick={() => dispatch(changeChannel(item))}
+                      //  onClick={() => dispatch(changeChannel(item))}
+                      onClick={() => clickHandler(item.id, channelsData, dispatch)}
                       type="button"
                       className="w-100 rounded-0 text-start btn btn-secondary"
                     >

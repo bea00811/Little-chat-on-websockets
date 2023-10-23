@@ -10,7 +10,7 @@ import SighnUpPage from './Components/SighnUp.jsx';
 import AuthContext from './Components/CreateContext.jsx';
 import { sendMessages, removeChannelMessages } from './slices/messagesSlice.js';
 import {
-  addChannel, deleteChannel, renameChannel,
+  addChannel, deleteChannel, renameChannel, changeChannel,
 } from './slices/channelSlice.js';
 import ToastContainer from './Components/ToastContainer.jsx';
 
@@ -55,11 +55,13 @@ const App = () => {
     console.log(channel);
     console.log('channel newChannel');
     dispatch(addChannel(channel));
+    dispatch(changeChannel(channel.id));
   });
 
   socket.on('removeChannel', (channel) => {
     console.log(channel);
     console.log('channel removeChannel');
+    dispatch(changeChannel(1));
     dispatch(deleteChannel(channel));
     dispatch(removeChannelMessages(channel));
   });
