@@ -30,14 +30,13 @@
   },
   "scripts": {
     "start": "npx start server",
-    "start-frontend": "PORT=5000 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "engines": {
     "npm": "9.8.1",
-    "node": "18.18.0"
+    "node": "18.x"
   },
   "eslintConfig": {
     "extends": [
