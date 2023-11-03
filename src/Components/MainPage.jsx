@@ -220,7 +220,7 @@ const MainPage = () => {
                     {errors.message && touched.message ? (
                       <div className="invalid-tooltip">{errors.message}</div>
                     ) : null}
-                    <button type="submit">{t('Send msg')}</button>
+                    <button disabled={!inputValue} type="submit">{t('Send msg')}</button>
                   </Form>
                 )}
               </Formik>
