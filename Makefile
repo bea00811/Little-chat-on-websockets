@@ -5,8 +5,4 @@ start:
 install:
 	npm i
 frontend:
-	PORT=5000 && react-scripts start
-
-	
-
-	
+	npx react-scripts start -timeout=1000
