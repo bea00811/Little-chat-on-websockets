@@ -4,5 +4,10 @@ start:
 	npm start 
 install:
 	npm i
-frontend:
+start-frontend:
 	npx react-scripts start -timeout=1000
+
+
+	
+
+	
