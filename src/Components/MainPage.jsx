@@ -150,7 +150,7 @@ const MainPage = () => {
                   <li key={item.id} data-id={item.id}>
                     {console.log(item)}
                     <button
-                      onClick={() => dispatch(changeChannel(item))}
+                      onClick={() => clickHandler(item.id, channelsData, dispatch)}
                       type="button"
                       className="w-100 rounded-0 text-start btn btn-secondary"
                     >
