@@ -10,7 +10,7 @@ const MyHeader = () => {
     <div className="container px-0">
       <nav className="px-4 shadow-sm navbar navbar-expand-lg navbar-light bg-white d-flex justify-content-between">
         <li>
-          <Link to="/">Hexlet Chat</Link>
+          <Link to="/">My little Chat</Link>
         </li>
         {loggedIn && <li>{`Hello, ${JSON.parse(localStorage.user).user}!`}</li>}
         {loggedIn && (
